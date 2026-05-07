@@ -1,0 +1,12 @@
+slug: "alex-rivera"
+name: "Alex Rivera"
+role: "Community Manager"
+avatar: "/images/authors/alex-rivera.webp"
+bio: >
+  Alex manages the freehosts.space community and writes about developer
+  culture, open-source projects, and the future of free infrastructure.
+  When not writing, Alex is usually moderating the Discord or reviewing PRs.
+links:
+  github: "https://github.com/alexrivera"
+  website: "https://alexrivera.io"
+joinedDate: "2024-06-20"

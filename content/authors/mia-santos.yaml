@@ -1,0 +1,13 @@
+slug: "mia-santos"
+name: "Mia Santos"
+role: "Staff Writer"
+avatar: "/images/authors/mia-santos.webp"
+bio: >
+  Mia writes about free hosting, deployment pipelines, and the indie web.
+  She has been a freehosts.space contributor since 2024 and loves exploring
+  the boundaries of what you can ship for zero dollars.
+links:
+  github: "https://github.com/miasantos"
+  twitter: "https://x.com/miasantos"
+  website: "https://miasantos.dev"
+joinedDate: "2024-03-15"

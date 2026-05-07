@@ -1,0 +1,66 @@
+---
+title: "Community Spotlight: Open Source Projects Hosted for Free"
+slug: "community-spotlight-open-source-free"
+date: "2026-03-28"
+authors: ["alex-rivera"]
+tags: ["community", "open-source", "free-hosting"]
+category: "community"
+excerpt: "Meet five open-source projects that run entirely on free hosting tiers. Their maintainers share what works, what breaks, and what they wish they knew earlier."
+cover:
+  src: "/images/posts/community-spotlight.webp"
+  alt: "Collage of open source project logos"
+featured: false
+draft: false
+---
+
+## The Free Tier Challenge
+
+Running an open-source project on zero budget sounds impossible. Server costs, bandwidth, CI/CD pipelines — it all adds up. But a growing number of projects have figured out how to run everything on free tiers, and they're thriving.
+
+We spoke to five maintainers about their setups and lessons learned.
+
+## Project 1: DevDocs.fyi
+
+A documentation aggregator serving 50,000 monthly visitors from Cloudflare Pages. The entire site is statically generated from a collection of markdown files, with search powered by a client-side index.
+
+**Stack**: Astro + Cloudflare Pages + Algolia free tier
+**Monthly cost**: $0
+**Key insight**: "Static generation changed everything. We went from $40/month on a VPS to zero."
+
+## Project 2: CodeReview.social
+
+A peer code review platform using Supabase's free tier for authentication and database, hosted on Vercel. The free tier limits haven't been a problem because the app is designed for async usage — no real-time features that would burn through connection limits.
+
+**Stack**: Next.js + Supabase + Vercel
+**Monthly cost**: $0
+**Key insight**: "Design your architecture around free tier limits from day one."
+
+## Project 3: IndieBlog Network
+
+A blog aggregator that crawls and indexes indie developer blogs. The crawler runs on GitHub Actions (free for public repos), and the frontend is hosted on Netlify.
+
+**Stack**: 11ty + Netlify + GitHub Actions
+**Monthly cost**: $0
+**Key insight**: "GitHub Actions as a free cron job changed our architecture completely."
+
+## Project 4: LocaleKit
+
+A translation management tool that runs entirely in the browser. No backend at all — translations are stored in the user's browser via IndexedDB, with optional export to JSON files.
+
+**Stack**: SvelteKit + Cloudflare Pages
+**Monthly cost**: $0
+**Key insight**: "Not every app needs a server. Moving logic to the client eliminated our hosting costs entirely."
+
+## Project 5: MeetupMap
+
+A global meetup directory with maps, search, and user submissions. The database is a flat JSON file stored in the repository, updated via pull requests.
+
+**Stack**: Next.js + GitHub Pages
+**Monthly cost**: $0
+**Key insight**: "Git as a database sounds crazy, but for our use case it works perfectly."
+
+## Common Patterns
+
+Across all five projects, some patterns emerge. Static generation is the foundation. Client-side search replaces server-side queries. GitHub Actions handles scheduled tasks. And the architecture is designed around free tier limits from the start, not retrofitted later.
+
+If you're building an open-source project and worried about hosting costs, take inspiration from these teams. The free tier is more capable than you think.

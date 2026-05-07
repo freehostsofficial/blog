@@ -1,0 +1,40 @@
+---
+title: "Cloudflare Pages vs Vercel: The Free Tier Showdown"
+slug: "cloudflare-pages-vs-vercel-free-tier"
+date: "2026-04-25"
+authors: ["joe-clark"]
+tags: ["cloudflare", "vercel", "comparison", "free-hosting"]
+category: "opinion"
+excerpt: "We put the two most popular free hosting platforms head to head. Bandwidth limits, build times, developer experience, and hidden gotchas — everything you need to choose."
+cover:
+  src: "/images/posts/cloudflare-vs-vercel.webp"
+  alt: "Split screen comparing Cloudflare and Vercel dashboards"
+featured: false
+draft: false
+---
+
+## The Contenders
+
+Both Cloudflare Pages and Vercel offer generous free tiers for hosting static and server-rendered web applications. But which one should you choose? We spent three months running identical projects on both platforms to find out.
+
+## Bandwidth and Limits
+
+This is where the biggest difference lies. Cloudflare Pages offers **unlimited bandwidth** on their free tier. Vercel caps you at **100 GB per month**. For most personal projects and small blogs, 100 GB is more than enough. But if your project goes viral on Hacker News or Reddit, you'll appreciate Cloudflare's unlimited approach.
+
+## Build Performance
+
+Build times are comparable for small to medium projects. Both platforms cache `node_modules` and build artifacts between deployments. For larger monorepos, Vercel's build infrastructure tends to be slightly faster thanks to their custom build system.
+
+## Developer Experience
+
+Vercel wins on developer experience for Next.js projects specifically. The integration is seamless — you push code, and the deployment just works. Preview deployments for pull requests are automatic, and the feedback loop is incredibly tight.
+
+Cloudflare Pages has improved dramatically but still feels more general-purpose. The build configuration is more manual, and debugging build failures requires more effort.
+
+## Edge Functions
+
+Both platforms offer edge function capabilities. Vercel's Edge Functions use their proprietary runtime, while Cloudflare Workers use the standard Web API. For static exports, this difference doesn't matter, but it's worth considering if you plan to add server-side features later.
+
+## Our Recommendation
+
+For Next.js static exports, we recommend **Cloudflare Pages** for its unlimited bandwidth. For full-featured Next.js applications with server components and API routes, **Vercel** is the natural choice. Either way, you can't go wrong — both platforms are excellent.

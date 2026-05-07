@@ -1,0 +1,12 @@
+slug: "joe-clark"
+name: "Joe Clark"
+role: "Senior Editor"
+avatar: "/images/authors/joe-clark.webp"
+bio: >
+  Joe is a senior editor at freehosts.space who covers platform comparisons,
+  community spotlights, and web development best practices. He brings over
+  a decade of experience in developer tooling and open-source advocacy.
+links:
+  github: "https://github.com/joeclark"
+  twitter: "https://x.com/joeclark"
+joinedDate: "2024-01-10"

@@ -1,0 +1,98 @@
+---
+title: "How to Deploy a Next.js App for Free in 2026"
+slug: "deploy-nextjs-free-2026"
+date: "2026-05-01"
+updatedAt: "2026-05-05"
+authors: ["mia-santos", "joe-clark"]
+tags: ["nextjs", "deployment", "free-hosting"]
+category: "guides"
+excerpt: "A complete walkthrough of deploying your Next.js application to free hosting platforms. From static exports to serverless functions, we cover every option available in 2026."
+cover:
+  src: "/images/posts/deploy-nextjs-cover.webp"
+  alt: "Terminal showing a successful Next.js build"
+  credit: "Photo by Mia Santos"
+featured: true
+draft: false
+---
+
+## Why Free Hosting Matters
+
+The web was built on the principle that anyone can publish. Free hosting keeps that promise alive. Whether you're a student building your first portfolio, an indie developer launching a side project, or a nonprofit stretching every dollar — free hosting removes the financial barrier to getting your work online.
+
+In 2026, the landscape of free hosting has never been better. Platforms compete to offer generous free tiers, and static site generators like Next.js make it trivial to build fast, SEO-friendly sites that run anywhere.
+
+## The Static Export Approach
+
+Next.js supports a pure static export mode via the `output: 'export'` configuration. This compiles your entire application into a folder of HTML, CSS, and JavaScript files that can be served by any web server — no Node.js runtime required.
+
+```js
+// next.config.js
+const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
+};
+
+module.exports = nextConfig;
+```
+
+This is the approach we use for this very blog. The `/out` directory gets uploaded to a static CDN, and that's it. No serverless functions, no edge runtime, no cold starts.
+
+## Platform Comparison
+
+Here's how the major free hosting platforms stack up for static Next.js sites:
+
+### Cloudflare Pages
+
+Cloudflare Pages offers unlimited bandwidth on their free tier, which is remarkable. Build times are fast, and the global CDN ensures your site loads quickly everywhere. The integration with Cloudflare Workers means you can add server-side functionality later if needed.
+
+### Vercel
+
+The company behind Next.js naturally offers excellent support. The free tier includes 100 GB of bandwidth per month, automatic preview deployments for every pull request, and built-in analytics. The downside is the bandwidth limit can be restrictive for high-traffic sites.
+
+### Netlify
+
+Netlify pioneered the JAMstack movement and remains a solid choice. Their free tier includes 100 GB bandwidth, form handling, and serverless functions. The build plugin ecosystem is mature and well-documented.
+
+### GitHub Pages
+
+For purely static sites, GitHub Pages is hard to beat. It's free, reliable, and integrates directly with your repository. The main limitation is the lack of server-side features, but for a static Next.js export, that's not a concern.
+
+## Step-by-Step Deployment
+
+Let's walk through deploying to Cloudflare Pages, our recommended platform for most use cases.
+
+### 1. Prepare Your Project
+
+Make sure your `next.config.js` includes the static export configuration shown above. Run a local build to verify everything works:
+
+```bash
+npm run build
+```
+
+This should create an `out/` directory with your static files.
+
+### 2. Connect to Cloudflare Pages
+
+Sign up for a free Cloudflare account, navigate to Pages, and connect your GitHub repository. Set the build command to `npm run build` and the output directory to `out`.
+
+### 3. Configure Custom Domain
+
+Once your first deployment succeeds, add your custom domain in the Cloudflare Pages settings. DNS propagation usually takes less than five minutes if your domain is already on Cloudflare.
+
+## Performance Considerations
+
+Static sites are inherently fast, but there are still optimizations worth making:
+
+- **Image formats**: Use WebP for all images. The quality-to-size ratio is unbeatable.
+- **Font loading**: Use `font-display: swap` with a size-matched fallback to prevent layout shift.
+- **JavaScript splitting**: Next.js handles this automatically, but verify your bundle sizes with `next build` output.
+- **Preloading**: Use `<link rel="preload">` for critical assets like your primary font files.
+
+## Conclusion
+
+Free hosting in 2026 is genuinely excellent. The platforms are mature, the tooling is solid, and the performance is comparable to paid alternatives for most use cases. If you're building with Next.js, a static export gives you the widest range of hosting options with zero ongoing cost.
+
+Start with Cloudflare Pages, and you'll have your site live in under ten minutes.
