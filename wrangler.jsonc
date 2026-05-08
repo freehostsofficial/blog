@@ -2,18 +2,11 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "blog",
   "compatibility_date": "2026-05-08",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "global_fetch_strictly_public"
-  ],
   "assets": {
-    "directory": "out",
-    "binding": "ASSETS"
+    "directory": "./out"
   },
+  "workers_dev": true,
   "observability": {
-    "logs": {
-      "enabled": true,
-      "invocation_logs": true
-    }
+    "enabled": true
   }
 }
