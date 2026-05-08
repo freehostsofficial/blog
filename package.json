@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts && tsx scripts/generate-search-index.ts && opennextjs-cloudflare build --skipNextBuild",
+    "build": "tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts && tsx scripts/generate-search-index.ts && next build && npm run postbuild",
     "postbuild": "tsx scripts/postbuild-clean.ts",
     "start": "next start",
     "lint": "eslint",
-    "preview": "npm run build && opennextjs-cloudflare preview",
-    "deploy": "npm run build && opennextjs-cloudflare deploy",
-    "upload": "npm run build && opennextjs-cloudflare upload",
+    "preview": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "upload": "npm run build && wrangler deploy --no-bundle",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
