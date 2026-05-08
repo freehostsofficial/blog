@@ -141,8 +141,10 @@ ul, ol { list-style: none; }
 .home-hero-body {
   position: relative;
   z-index: 2;
-  max-width: 680px;
-  padding: 3rem 2rem;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
 }
 .home-hero-label {
   display: inline-block;
@@ -198,7 +200,7 @@ ul, ol { list-style: none; }
 }
 @media (max-width: 768px) {
   .home-hero { min-height: 420px; }
-  .home-hero-body { padding: 2rem 1.5rem; }
+  .home-hero-body { padding: 2rem 1rem; }
 }
 
 /* ─── Section Headers ─── */
@@ -570,7 +572,7 @@ ul, ol { list-style: none; }
 .breadcrumb a:hover { color: var(--accent); }
 
 /* About page */
-.about-content { max-width: 70ch; margin: 0 auto; padding: 0 1.5rem; }
+.about-content { max-width: 70ch; padding: 0; }
 .about-content h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
 .about-content p { margin: 0 0 1.25rem; color: var(--muted); }
 
