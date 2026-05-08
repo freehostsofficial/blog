@@ -18,5 +18,11 @@
       "binding": "WORKER_SELF_REFERENCE",
       "service": "blog"
     }
-  ]
+  ],
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    }
+  }
 }
