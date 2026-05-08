@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "freehosts-blog",
+  "compatibility_date": "2026-05-08",
+  "compatibility_flags": [
+    // Enable Node.js API compatibility
+    "nodejs_compat",
+    // Allow fetching public URLs from within the worker
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "freehosts-blog"
+    }
+  ]
+}
