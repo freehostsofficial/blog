@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "freehosts-blog",
+  "name": "blog",
   "compatibility_date": "2026-05-08",
   "compatibility_flags": [
     // Enable Node.js API compatibility
@@ -16,7 +16,7 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "freehosts-blog"
+      "service": "blog"
     }
   ]
 }
