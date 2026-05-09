@@ -30,13 +30,31 @@ function parsePostFile(filename: string): Post {
 }
 
 /**
+ * Helper to recursively find all MDX files in a directory.
+ */
+function getMdxFiles(dir: string, baseDir: string = dir): string[] {
+  let results: string[] = [];
+  const list = fs.readdirSync(dir);
+  list.forEach((file) => {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+    if (stat && stat.isDirectory()) {
+      results = results.concat(getMdxFiles(filePath, baseDir));
+    } else if (file.endsWith('.mdx')) {
+      results.push(path.relative(baseDir, filePath));
+    }
+  });
+  return results;
+}
+
+/**
  * Returns all non-draft posts sorted newest first.
  * @returns Array of Post objects
  */
 export function getAllPosts(): Post[] {
   if (!fs.existsSync(postsDir)) return [];
 
-  const files = fs.readdirSync(postsDir).filter((f) => f.endsWith('.mdx'));
+  const files = getMdxFiles(postsDir);
 
   return files
     .map((file) => parsePostFile(file))
