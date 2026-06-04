@@ -1,6 +1,6 @@
 /** Site-level constants — no hardcoded strings elsewhere in the codebase */
 
-export const SITE_NAME = 'FreeHosts Blog';
+export const SITE_NAME = 'FreeHosts';
 export const SITE_URL = 'https://blog.freehosts.space';
 export const PARENT_URL = 'https://freehosts.space';
 export const SITE_DESCRIPTION = 'The official blog for FreeHosts — guides, comparisons, tutorials, and community spotlights about free hosting.';
