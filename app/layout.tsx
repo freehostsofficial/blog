@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { DM_Serif_Display, Inter } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import Nav from '@/components/Nav'
+import { ShortcutOverlay } from '@/components/ShortcutOverlay'
 import Footer from '@/components/Footer'
 import { ToastContainer } from '@/components/ui/toast'
 import { ImageLightbox } from '@/components/ImageLightbox'
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <ToastContainer />
           <ImageLightbox />
+          <ShortcutOverlay />
         </ThemeProvider>
       </body>
     </html>

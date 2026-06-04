@@ -18,6 +18,7 @@ const NAV_LINKS = [
   { href: '/authors', label: 'Authors' },
   { href: '/archive', label: 'Archive' },
   { href: '/about',   label: 'About'   },
+  { href: '/shortcuts', label: 'Shortcuts' },
 ]
 
 export default function Nav() {

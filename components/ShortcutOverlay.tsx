@@ -5,6 +5,19 @@ import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import { X } from 'lucide-react'
 
+const SHORTCUTS = [
+  { key: '?', label: 'Toggle this cheat sheet' },
+  { key: '⌘ / Ctrl + K', label: 'Open search' },
+  { key: '/', label: 'Focus search' },
+  { key: 'Alt + T', label: 'Toggle dark / light mode' },
+  { key: 'Alt + H', label: 'Go to Home page' },
+  { key: 'Alt + P', label: 'Go to Posts' },
+  { key: 'Alt + A', label: 'Go to Archive' },
+  { key: 'Alt + S', label: 'Go to Shortcuts page' },
+  { key: 'Alt + R', label: 'Go to a random post' },
+  { key: 'Esc', label: 'Close modals / dialogs' },
+]
+
 export function ShortcutOverlay() {
   const [isOpen, setIsOpen] = useState(false)
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -14,29 +27,53 @@ export function ShortcutOverlay() {
 
   useEffect(() => {
     const onKeydown = (e: KeyboardEvent) => {
-      if (
+      const isInputFocused =
         document.activeElement?.tagName === 'INPUT' ||
         document.activeElement?.tagName === 'TEXTAREA' ||
         (document.activeElement as HTMLElement)?.isContentEditable
-      ) {
+
+      if (isInputFocused) {
         if (e.key === 'Escape' && isOpen) {
-           setIsOpen(false)
+          setIsOpen(false)
         }
         return
       }
 
-      if (e.key === '?') {
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
         e.preventDefault()
         if (!isOpen) previousFocusRef.current = document.activeElement as HTMLElement
         setIsOpen(v => !v)
-      } else if (e.key === 'Escape' && isOpen) {
-        setIsOpen(false)
-      } else if (!isOpen) {
+        return
+      }
+
+      if (e.key === 'Escape') {
+        if (isOpen) setIsOpen(false)
+        return
+      }
+
+      if (e.key === '/' && !isOpen) {
+        e.preventDefault()
+        document.querySelector<HTMLButtonElement>('.nav-search-hint')?.click()
+        return
+      }
+
+      if (!isOpen && e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
         const k = e.key.toLowerCase()
-        if (k === 'h') router.push('/')
-        if (k === 'p') router.push('/posts')
-        if (k === 'a') router.push('/archive')
-        if (k === 't') setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
+        if (k === 'p') { e.preventDefault(); router.push('/posts') }
+        else if (k === 'h') { e.preventDefault(); router.push('/') }
+        else if (k === 'a') { e.preventDefault(); router.push('/archive') }
+        else if (k === 's') { e.preventDefault(); router.push('/shortcuts') }
+        else if (k === 'r') {
+          e.preventDefault()
+          fetch('/search-index.json')
+            .then(r => r.json())
+            .then(posts => {
+              if (!posts.length) return
+              const p = posts[Math.floor(Math.random() * posts.length)]
+              router.push(`/${p.category}/${p.slug}`)
+            })
+            .catch(() => {})
+        } else if (k === 't') { e.preventDefault(); setTheme(resolvedTheme === 'dark' ? 'light' : 'dark') }
       }
     }
     document.addEventListener('keydown', onKeydown)
@@ -83,16 +120,6 @@ export function ShortcutOverlay() {
 
   if (!isOpen) return null
 
-  const shortcuts = [
-    { key: '?', label: 'Toggle this cheat sheet' },
-    { key: '⌘ / Ctrl + K', label: 'Open Search' },
-    { key: 'T', label: 'Toggle dark/light mode' },
-    { key: 'H', label: 'Go to Home page' },
-    { key: 'A', label: 'Go to Archive' },
-    { key: 'P', label: 'Go to Posts' },
-    { key: 'Esc', label: 'Close modals / dialogs' },
-  ]
-
   return (
     <div className="search-overlay" onClick={(e) => e.target === e.currentTarget && setIsOpen(false)}>
       <div
@@ -115,7 +142,7 @@ export function ShortcutOverlay() {
         </div>
         <div className="shortcut-dialog-content">
           <ul className="shortcut-list">
-            {shortcuts.map(s => (
+            {SHORTCUTS.map(s => (
               <li key={s.key} className="shortcut-item">
                 <span className="shortcut-label">{s.label}</span>
                 <kbd className="search-kbd">{s.key}</kbd>
