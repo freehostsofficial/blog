@@ -1877,7 +1877,7 @@
     pointer-events: none;
   }
   .toast {
-    background-color: var(--c-surface);
+    background: var(--c-bg-raised);
     border: 1px solid var(--c-border);
     border-radius: var(--radius-md);
     padding: var(--sp-3) var(--sp-4);
@@ -1931,7 +1931,7 @@
 
   /* --- SHORTCUT OVERLAY --- */
   .shortcut-dialog {
-    background-color: var(--c-surface);
+    background: var(--c-bg);
     border: 1px solid var(--c-border);
     border-radius: var(--radius-lg);
     width: 100%;
@@ -2095,7 +2095,7 @@
     position: absolute;
     top: var(--sp-4);
     right: var(--sp-4);
-    background-color: var(--c-surface);
+    background: var(--c-bg);
     border: 1px solid var(--c-border);
     color: var(--c-text-1);
     border-radius: var(--radius-full);
