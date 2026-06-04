@@ -16,7 +16,7 @@ export default function AuthorByline({ authors, date, readingTime }: Props) {
         {authors.slice(0, 3).map(author => (
           <span key={author.slug} className="avatar-xs" title={author.name}>
             {author.avatar
-              ? <Image src={author.avatar} alt={author.name} width={24} height={24} />
+              ? <Image src={author.avatar} alt={author.name} width={24} height={24} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               : getInitials(author.name)
             }
           </span>

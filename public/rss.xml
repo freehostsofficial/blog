@@ -5,8 +5,17 @@
     <link>https://blog.freehosts.space</link>
     <description>The official blog for FreeHosts — guides, comparisons, tutorials, and community spotlights about free hosting.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 04 Jun 2026 15:36:08 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 04 Jun 2026 20:05:11 GMT</lastBuildDate>
     <atom:link href="https://blog.freehosts.space/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title><![CDATA[Mastering Git for Solo Developers]]></title>
+      <link>https://blog.freehosts.space/guides/mastering-git-solo-developers/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/guides/mastering-git-solo-developers/</guid>
+      <description><![CDATA[Git isn't just for teams. A solid Git workflow makes solo development faster, safer, and more organized. Here's the workflow we recommend.]]></description>
+      <pubDate>Thu, 12 Mar 2026 00:00:00 GMT</pubDate>
+      <author>shadow-gaming</author>
+      <category>guides</category>
+    </item>
     <item>
       <title><![CDATA[Getting Started with Cloudflare Pages]]></title>
       <link>https://blog.freehosts.space/guides/cloudflare-pages-guide/</link>

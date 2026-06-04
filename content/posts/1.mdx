@@ -1,0 +1,61 @@
+---
+title: "Mastering Git for Solo Developers"
+slug: "mastering-git-solo-developers"
+date: "2026-03-12"
+authors: ["shadow-gaming"]
+tags: ["git", "tutorials", "getting-started"]
+category: "guides"
+excerpt: "Git isn't just for teams. A solid Git workflow makes solo development faster, safer, and more organized. Here's the workflow we recommend."
+cover:
+  src: "/images/posts/image.png"
+  alt: "Git branch visualization"
+featured: false
+draft: false
+---
+
+## Why Bother?
+
+If you're the only person working on a project, version control might seem like overhead. But Git isn't just about collaboration — it's about having a safety net, a changelog, and a deployment pipeline all in one tool.
+
+The solo developer who commits regularly, writes meaningful commit messages, and uses branches for experiments will ship faster and break less than the one who doesn't.
+
+## The Minimal Workflow
+
+You don't need GitFlow or trunk-based development. For solo projects, a simple workflow is best:
+
+1. **Main branch**: Always deployable. Every commit here should be stable.
+2. **Feature branches**: One branch per feature or fix. Merge when done, delete the branch.
+3. **Commit messages**: Use conventional commits (`feat:`, `fix:`, `docs:`). Your future self will thank you.
+
+## Essential Commands
+
+Here are the Git commands you'll use every day:
+
+```bash
+# Start a new feature
+git checkout -b feat/add-search
+
+# Stage and commit
+git add -A
+git commit -m "feat: add client-side search with fuse.js"
+
+# Merge back to main
+git checkout main
+git merge feat/add-search
+git branch -d feat/add-search
+
+# Push to remote
+git push origin main
+```
+
+## The Safety Net
+
+Git's greatest value for solo developers is the ability to experiment without fear. Create a branch, try something wild, and if it doesn't work, just delete the branch. Your main branch is untouched.
+
+Use `git stash` when you need to switch context quickly. Use `git log --oneline` to review your recent history. Use `git diff` to review changes before committing.
+
+## Deployment Integration
+
+Most free hosting platforms can deploy automatically from your Git repository. Push to main, and your site updates. This is the simplest possible CI/CD pipeline, and it works beautifully for solo projects.
+
+Connect your repository to Cloudflare Pages or Vercel, and every push becomes a deployment. No scripts, no pipelines, no configuration. Just push and ship.

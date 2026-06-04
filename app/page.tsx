@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import PostCard from '@/components/PostCard'
+import AuthorByline from '@/components/AuthorByline'
 import { getAllPosts, getFeaturedPost } from '@/lib/posts'
+import { getAuthorBySlug } from '@/lib/authors'
 import { getAllCategories } from '@/lib/categories'
 import { CATEGORY_LABELS, type Category } from '@/types'
 import { SITE_NAME, SITE_URL } from '@/lib/config'
@@ -10,6 +12,10 @@ export default function HomePage() {
   const allPosts  = getAllPosts()
   const latest    = allPosts.filter(p => p.slug !== featured?.slug).slice(0, 6)
   const categories = getAllCategories()
+
+  const featuredAuthors = featured
+    ? featured.authors.map(slug => getAuthorBySlug(slug))
+    : []
 
   const websiteJsonLd = {
     '@context': 'https://schema.org',
@@ -32,8 +38,24 @@ export default function HomePage() {
       />
 
       {featured && (
-        <section className="container home-featured" aria-label="Featured post">
-          <PostCard post={featured} variant="featured" />
+        <section className="home-hero">
+          {featured.cover && (
+            <img src={featured.cover.src} alt={featured.cover.alt} className="home-hero-bg" />
+          )}
+          <div className="home-hero-overlay" />
+          <div className="home-hero-body">
+            <span className="home-hero-label">Featured</span>
+            <h1 className="home-hero-title">
+              <Link href={`/${featured.category}/${featured.slug}`}>
+                {featured.title}
+              </Link>
+            </h1>
+            <p className="home-hero-excerpt">{featured.excerpt}</p>
+            <AuthorByline authors={featuredAuthors} date={featured.date} readingTime={featured.readingTime} />
+            <Link href={`/${featured.category}/${featured.slug}`} className="home-hero-cta">
+              Read article →
+            </Link>
+          </div>
         </section>
       )}
 

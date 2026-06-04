@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://blog.freehosts.space/</loc>
-    <lastmod>Sun Feb 15 2026 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
+    <lastmod>2026-03-12</lastmod>
   </url>
   <url>
     <loc>https://blog.freehosts.space/posts/</loc>
-    <lastmod>Sun Feb 15 2026 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
+    <lastmod>2026-03-12</lastmod>
   </url>
   <url>
     <loc>https://blog.freehosts.space/archive/</loc>
-    <lastmod>Sun Feb 15 2026 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
+    <lastmod>2026-03-12</lastmod>
   </url>
   <url>
     <loc>https://blog.freehosts.space/authors/</loc>
@@ -20,6 +20,10 @@
   </url>
   <url>
     <loc>https://blog.freehosts.space/about/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/guides/mastering-git-solo-developers/</loc>
+    <lastmod>2026-03-12</lastmod>
   </url>
   <url>
     <loc>https://blog.freehosts.space/guides/cloudflare-pages-guide/</loc>
@@ -120,6 +124,15 @@
   </url>
   <url>
     <loc>https://blog.freehosts.space/tags/community/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/git/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/tutorials/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/getting-started/</loc>
   </url>
   <url>
     <loc>https://blog.freehosts.space/tags/vercel/</loc>
