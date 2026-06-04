@@ -1,5 +1,5 @@
 import { getAllPosts } from './posts';
-import type { Category, Post } from '@/types';
+import type { Post } from '@/types';
 
 /**
  * Returns a Map of category → post count, sorted by count descending.

@@ -1,0 +1,150 @@
+---
+title: Cloudflare Workers Now Support Python Runtime
+slug: cloudflare-workers-python
+date: 2025-08-14
+authors:
+  - alex-chen
+tags:
+  - cloudflare
+  - python
+  - serverless
+  - news
+  - workers
+category: news
+excerpt: Cloudflare has added native Python support to Workers, opening serverless edge computing to one of the world's largest developer communities.
+cover:
+  src: /images/posts/cover-cloudflare-workers-python.jpg
+  alt: Python code running on Cloudflare Workers
+featured: false
+draft: false
+---
+
+Cloudflare announced native Python support for Workers in August 2025, bringing one of the most requested features to the platform. This marks a significant expansion of the Workers ecosystem, which previously supported only JavaScript, TypeScript, and WebAssembly.
+
+## What Was Announced
+
+The Python Workers runtime uses Pyodide — a Python implementation compiled to WebAssembly — running inside Cloudflare's isolates. This approach allows Python code to execute with the same security and performance characteristics as JavaScript Workers.
+
+Key details from the announcement:
+
+- **Full Python 3.12 support** — standard library included
+- **Package support** — install packages via `requirements.txt` using a compatibility layer
+- **Framework support** — popular frameworks like FastAPI and Flask are partially supported
+- **Same pricing** — Python Workers cost the same as JavaScript Workers
+- **Free tier** — 100,000 requests per day on the free plan
+
+## How It Works
+
+### Basic Python Worker
+
+```python
+from js import Response, Request
+
+async def on_fetch(request: Request):
+    name = request.url.split("/")[-1] or "World"
+    return Response.new(f"Hello, {name}!")
+```
+
+### With Dependencies
+
+Add a `requirements.txt` file:
+
+```
+httpx==0.27.0
+pydantic==2.5.0
+```
+
+Then deploy using the Wrangler CLI:
+
+```bash
+wrangler deploy
+```
+
+## Performance Benchmarks
+
+Early benchmarks show Python Workers performing competitively:
+
+| Workload | Python Worker | Node.js Worker | Difference |
+|---|---|---|---|
+| JSON response | 1.2ms cold | 0.8ms cold | +50% |
+| JSON response | 0.4ms warm | 0.3ms warm | +33% |
+| HTTP fetch + parse | 4.1ms | 3.2ms | +28% |
+| Image processing | 12ms | 8ms | +50% |
+
+The cold start penalty is more noticeable with Python due to the WebAssembly boot time. However, for warm requests — which represent the majority of production traffic — the performance difference narrows significantly.
+
+## What This Means for Developers
+
+### Python Ecosystem at the Edge
+
+The most significant impact is that Python's vast ecosystem of libraries is now available at the edge. Data science libraries, NLP tools, and web frameworks can run on Cloudflare's global network.
+
+### Easier Adoption for Teams
+
+Organizations with Python-heavy teams can now adopt edge computing without requiring JavaScript expertise. This lowers the barrier to entry for serverless adoption.
+
+### New Use Cases
+
+Python Workers enable new edge computing use cases:
+
+- **ML inference at the edge** — run small models with `scikit-learn` or `onnxruntime`
+- **Natural language processing** — process text with `spaCy` or `transformers`
+- **Data processing** — transform and filter data with `pandas`
+- **Web scraping** — parse HTML with `beautifulsoup4`
+
+## How to Get Started
+
+### Step 1: Install Wrangler
+
+```bash
+npm install -g wrangler
+```
+
+### Step 2: Create a Python Worker
+
+```bash
+wrangler init my-python-worker --language python
+cd my-python-worker
+```
+
+### Step 3: Write Your Worker
+
+Edit `src/entry.py`:
+
+```python
+from js import Response, Request
+import json
+
+async def on_fetch(request: Request):
+    data = {
+        "message": "Hello from Python on Cloudflare Workers!",
+        "version": "3.12",
+        "runtime": "pyodide"
+    }
+    headers = {"Content-Type": "application/json"}
+    return Response.new(json.dumps(data), headers=headers)
+```
+
+### Step 4: Deploy
+
+```bash
+wrangler deploy
+```
+
+Your worker will be live at `https://my-python-worker.your-subdomain.workers.dev`.
+
+## Limitations
+
+Python Workers have some limitations:
+
+- **Cold start** — 1–3 seconds for the first request after idle
+- **Memory** — limited to 128 MB (same as JavaScript Workers)
+- **CPU time** — 10ms per request on free plan
+- **Library compatibility** — not all C-extensions work with Pyodide
+- **No direct filesystem access** — use KV or R2 for persistent storage
+
+## Conclusion
+
+Cloudflare's Python support for Workers is a significant step forward for serverless computing. While there are limitations, the ability to run Python code across 330+ edge locations opens up new possibilities for developers who prefer Python over JavaScript.
+
+The platform is still evolving, and we expect performance to improve as the Pyodide runtime matures and Cloudflare optimizes its infrastructure for Python workloads.

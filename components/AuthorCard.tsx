@@ -1,40 +1,38 @@
-import Link from 'next/link';
-import type { Author } from '@/types';
+import Image from 'next/image'
+import Link from 'next/link'
+import { getInitials } from '@/lib/utils'
+import type { Author } from '@/types'
 
-interface AuthorCardProps {
-  author: Author;
+interface Props {
+  author: Author
+  postCount?: number
 }
 
-/** Large author card shown at bottom of posts and on author pages */
-export function AuthorCard({ author }: AuthorCardProps) {
+export default function AuthorCard({ author, postCount }: Props) {
+  const { name, slug, avatar, bio, role } = author
+
   return (
-    <div className="author-card">
-      <img
-        src={author.avatar}
-        alt={author.name}
-        className="author-card-avatar"
-        width={80}
-        height={80}
-        loading="lazy"
-      />
-      <div>
-        <h3 className="author-card-name">
-          <Link href={`/authors/${author.slug}`}>{author.name}</Link>
-        </h3>
-        <div className="author-card-role">{author.role}</div>
-        <p className="author-card-bio">{author.bio}</p>
-        <div className="author-card-links">
-          {author.links?.github && (
-            <a href={author.links.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-          )}
-          {author.links?.twitter && (
-            <a href={author.links.twitter} target="_blank" rel="noopener noreferrer">Twitter</a>
-          )}
-          {author.links?.website && (
-            <a href={author.links.website} target="_blank" rel="noopener noreferrer">Website</a>
+    <article className="author-card">
+      <div className="author-card-header">
+        <div className="avatar-lg">
+          {avatar
+            ? <Image src={avatar} alt={name} width={72} height={72} />
+            : <span aria-hidden="true">{getInitials(name)}</span>
+          }
+        </div>
+
+        <div>
+          <Link href={`/authors/${slug}`} className="author-card-name">{name}</Link>
+          {role && <p className="author-card-role">{role}</p>}
+          {postCount !== undefined && (
+            <p className="author-card-post-count">
+              {postCount} {postCount === 1 ? 'post' : 'posts'}
+            </p>
           )}
         </div>
       </div>
-    </div>
-  );
+
+      {bio && <p className="author-card-bio">{bio}</p>}
+    </article>
+  )
 }

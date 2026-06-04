@@ -1,39 +1,74 @@
-import Link from 'next/link';
-import { SITE_NAME, SITE_DESCRIPTION, PARENT_URL, SOCIAL_LINKS } from '@/lib/config';
+import Link from 'next/link'
+import { Rss, ArrowUp } from 'lucide-react'
+import { SITE_NAME } from '@/lib/config'
 
-/** Two-column footer with site info, explore links, and connect links */
-export function Footer() {
+const EXPLORE_LINKS = [
+  { href: '/posts',   label: 'All Posts'  },
+  { href: '/tags',    label: 'Tags'       },
+  { href: '/authors', label: 'Authors'    },
+  { href: '/archive', label: 'Archive'    },
+  { href: '/about',   label: 'About'      },
+]
+
+const RESOURCE_LINKS = [
+  { href: '/rss.xml',          label: 'RSS Feed',     external: true  },
+  { href: '/sitemap.xml',      label: 'Sitemap',      external: true  },
+  { href: 'https://freehosts.space', label: 'Directory', external: true },
+]
+
+export default function Footer() {
+  const year = new Date().getFullYear()
+
   return (
-    <footer className="footer" id="site-footer">
-      <div className="footer-inner">
-        <div className="footer-col">
-          <h4>{SITE_NAME}</h4>
-          <p style={{ fontSize: '0.85rem', color: 'var(--muted)', margin: 0, lineHeight: 1.6 }}>
-            {SITE_DESCRIPTION}
-          </p>
-          <p style={{ fontSize: '0.8rem', marginTop: '0.75rem' }}>
-            <a href={PARENT_URL}>← freehosts.space</a>
-          </p>
+    <footer className="site-footer">
+      <div className="container">
+        <div className="footer-grid">
+
+          <div className="footer-col">
+            <Link href="/" className="footer-brand">{SITE_NAME}</Link>
+            <p className="footer-desc">
+              A community directory of free web hosting providers. News,
+              guides, and tutorials for developers who want hosting without
+              the price tag.
+            </p>
+          </div>
+
+          <div className="footer-col">
+            <h3 className="footer-heading">Explore</h3>
+            <ul className="footer-links" role="list">
+              {EXPLORE_LINKS.map(({ href, label }) => (
+                <li key={href}>
+                  <Link href={href}>{label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="footer-col">
+            <h3 className="footer-heading">Resources</h3>
+            <ul className="footer-links" role="list">
+              {RESOURCE_LINKS.map(({ href, label, external }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    {label === 'RSS Feed' && <Rss size={12} aria-hidden="true" />}
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="footer-col">
-          <h4>Explore</h4>
-          <Link href="/posts">All Posts</Link>
-          <Link href="/archive">Archive</Link>
-          <Link href="/authors">Authors</Link>
-          <Link href="/tags">Tags</Link>
-          <Link href="/about">About</Link>
+
+        <div className="footer-bottom">
+          <span>© {year} {SITE_NAME}. All rights reserved.</span>
+          <a href="#main-content" className="back-to-top" aria-label="Back to top of page" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            Back to top <ArrowUp size={14} />
+          </a>
         </div>
-        <div className="footer-col">
-          <h4>Connect</h4>
-          <a href={SOCIAL_LINKS.rss}>RSS Feed</a>
-          <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href={SOCIAL_LINKS.twitter} target="_blank" rel="noopener noreferrer">Twitter / X</a>
-          <a href={PARENT_URL} target="_blank" rel="noopener noreferrer">freehosts.space</a>
-        </div>
-      </div>
-      <div className="footer-copy">
-        © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
       </div>
     </footer>
-  );
+  )
 }

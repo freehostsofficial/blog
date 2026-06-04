@@ -1,0 +1,147 @@
+---
+title: How to Deploy a Static Site on Netlify for Free
+slug: netlify-static-deploy
+date: 2025-07-30
+authors:
+  - shadow-gaming
+tags:
+  - netlify
+  - deployment
+  - beginner
+  - tutorial
+category: guides
+excerpt: A complete walkthrough for deploying a static site on Netlify's free tier, from Git connection to custom domain and form handling.
+cover:
+  src: /images/posts/cover-netlify-static-deploy.jpg
+  alt: Netlify deployment pipeline visualization
+featured: false
+draft: false
+---
+
+Netlify has been a cornerstone of the JAMstack ecosystem since 2015. Its free tier remains one of the most generous and feature-rich options for deploying static sites. In this guide, we'll walk through deploying a site from start to finish.
+
+## Why Netlify?
+
+Netlify's free plan includes everything you need to run a production static site:
+
+- **100 GB bandwidth per month** — handles thousands of daily visitors
+- **300 build minutes per month** — enough for regular updates
+- **1 concurrent build** — builds run sequentially
+- **Custom domains** — unlimited custom domains with free SSL
+- **Deploy previews** — preview pull request changes before merging
+- **Form handling** — collect form submissions without a backend
+- **Serverless functions** — 125,000 requests per month
+
+## Prerequisites
+
+- A Git repository (GitHub, GitLab, or Bitbucket)
+- A static site project (HTML, React, Vue, etc.)
+- A Netlify account (free)
+
+## Step 1: Connect Your Repository
+
+1. Log in to [netlify.com](https://netlify.com)
+2. Click **Add new site > Import an existing project**
+3. Connect your Git provider and authorize Netlify
+4. Select your repository
+
+## Step 2: Configure Build Settings
+
+Netlify will auto-detect your framework. If not, configure manually:
+
+| Framework | Build command | Publish directory |
+|---|---|---|
+| Plain HTML | (none) | `/` or `.` |
+| React (Vite) | `npm run build` | `dist` |
+| Next.js | `npm run build` | `out` |
+| Hugo | `hugo` | `public` |
+| Eleventy | `npx @11ty/eleventy` | `_site` |
+
+Click **Deploy site**. Netlify will build and deploy your site, providing a `random-name.netlify.app` URL.
+
+## Step 3: Add a Custom Domain
+
+1. Go to **Site settings > Domain management**
+2. Click **Add custom domain**
+3. Enter your domain (e.g., `mysite.com`)
+4. Update your DNS:
+   - **Apex domain:** Create an A record pointing to `75.2.60.5`
+   - **WWW subdomain:** Create a CNAME record pointing to `your-site.netlify.app`
+5. Wait for DNS propagation (5–30 minutes)
+6. Netlify automatically provisions a Let's Encrypt SSL certificate
+
+## Step 4: Set Up Deploy Previews
+
+Deploy previews are one of Netlify's best features. Every pull request generates a unique preview URL:
+
+1. Go to **Site settings > Build & deploy > Deploy notifications**
+2. Ensure **Pull request** notifications are enabled
+3. Team members can review changes at the preview URL before merging
+
+## Step 5: Add Form Handling
+
+Netlify can handle form submissions without any server-side code:
+
+```html
+<form name="contact" method="POST" data-netlify="true" netlify>
+  <input type="text" name="name" placeholder="Your name" required />
+  <input type="email" name="email" placeholder="Your email" required />
+  <textarea name="message" placeholder="Your message"></textarea>
+  <button type="submit">Send</button>
+</form>
+```
+
+Form submissions are collected in the Netlify dashboard under **Forms**. You can also set up email notifications for new submissions.
+
+## Step 6: Add Serverless Functions
+
+Netlify Functions let you add backend logic without managing a server:
+
+```javascript
+// netlify/functions/hello.js
+exports.handler = async (event) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "Hello from Netlify Functions!" })
+  };
+};
+```
+
+Deploy functions by pushing to your repository. They'll be available at `/.netlify/functions/hello`.
+
+## Step 7: Configure Redirects and Headers
+
+Create a `_redirects` file in your publish directory:
+
+```
+# Redirects
+/blog/*    /posts/:splat   301
+/old-page  /new-page       301
+/*         /index.html     200
+```
+
+Create a `_headers` file for security headers:
+
+```
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=()
+```
+
+## Step 8: Set Up Notifications
+
+Configure deployment notifications:
+
+1. Go to **Site settings > Build & deploy > Deploy notifications**
+2. Add notification channels:
+   - **Email** — get notified on successful or failed deploys
+   - **Slack** — notify a channel on deploy events
+   - **Webhook** — trigger external services
+
+## Conclusion
+
+Netlify's free tier provides everything needed to run a production static site. With Git-based deployments, form handling, serverless functions, and generous bandwidth limits, it remains one of the best options for developers launching personal projects and small business sites.
+
+For your next step, try deploying a single-page application with routing, or explore Netlify's split testing feature for A/B testing your site.

@@ -1,31 +1,64 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
-/** 2-3px reading progress bar fixed to viewport top, only on post pages */
 export function ReadingProgress() {
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    function handleScroll() {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight > 0) {
-        setProgress(Math.min(scrollTop / docHeight, 1));
+    const updateProgress = () => {
+      const article = document.querySelector('article')
+      if (!article) return
+      
+      const { top, height } = article.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      const scrollPosition = -top
+      const totalScrollable = height - windowHeight
+      
+      if (totalScrollable <= 0) {
+        setProgress(100)
+        return
       }
+      
+      let percentage = (scrollPosition / totalScrollable) * 100
+      percentage = Math.max(0, Math.min(100, percentage))
+      
+      setProgress(percentage)
     }
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    // Initial check
+    updateProgress()
+    // Check after images might have loaded
+    setTimeout(updateProgress, 500)
+    
+    return () => window.removeEventListener('scroll', updateProgress)
+  }, [])
 
   return (
-    <div
-      className="reading-progress"
-      style={{ transform: `scaleX(${progress})` }}
-      role="progressbar"
-      aria-valuenow={Math.round(progress * 100)}
-      aria-valuemin={0}
-      aria-valuemax={100}
-    />
-  );
+    <div 
+      className="reading-progress-container"
+      aria-hidden="true"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '4px',
+        backgroundColor: 'transparent',
+        zIndex: 100,
+      }}
+    >
+      <div 
+        className="reading-progress-bar"
+        style={{
+          height: '100%',
+          width: `${progress}%`,
+          backgroundColor: 'var(--c-accent)',
+          transition: 'width 100ms ease-out',
+        }}
+      />
+    </div>
+  )
 }

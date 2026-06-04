@@ -1,0 +1,166 @@
+---
+title: Build a Portfolio Site with GitHub Pages
+slug: static-site-portfolio
+date: 2025-12-10
+authors:
+  - jordan-lee
+tags:
+  - github-pages
+  - static-site
+  - tutorial
+  - portfolio
+category: tutorials
+excerpt: Create a professional portfolio site for free using GitHub Pages and Jekyll. Includes setup, theming, custom domains, and SEO optimization.
+cover:
+  src: /images/posts/cover-static-site-portfolio.jpg
+  alt: GitHub Pages portfolio site preview
+featured: false
+draft: false
+---
+
+GitHub Pages is one of the oldest and most reliable free hosting platforms. It's been serving developer portfolios, project documentation, and personal blogs since 2008. In this tutorial, we'll build a complete portfolio site from scratch.
+
+## Why GitHub Pages?
+
+GitHub Pages offers several advantages for a portfolio site:
+
+- **Completely free** — no hidden costs or tier limits
+- **Git integration** — update your site by pushing to a repository
+- **Custom domains** — use your own domain with free SSL
+- **Jekyll support** — built-in static site generator
+- **1 GB storage** — plenty for a portfolio site
+- **100 GB bandwidth** — generous for personal use
+
+## Getting Started
+
+### Step 1: Create a Repository
+
+1. Log in to GitHub and create a new repository named `yourusername.github.io`
+2. Check **Add a README file**
+3. Choose **Public** visibility
+4. Click **Create repository**
+
+The repository name must match your GitHub username exactly for the default URL to work.
+
+### Step 2: Add Your First Page
+
+Clone the repository and add an `index.html` file:
+
+```bash
+git clone https://github.com/yourusername/yourusername.github.io.git
+cd yourusername.github.io
+```
+
+Create `index.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name — Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Your Name</h1>
+    <p>Full-Stack Developer</p>
+  </header>
+  <main>
+    <section id="about">
+      <h2>About Me</h2>
+      <p>Write a brief introduction about yourself here.</p>
+    </section>
+    <section id="projects">
+      <h2>Projects</h2>
+      <!-- Add your projects here -->
+    </section>
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Email: yourname@example.com</p>
+    </section>
+  </main>
+</body>
+</html>
+```
+
+Push and your site will be live at `https://yourusername.github.io` within minutes.
+
+### Step 3: Use Jekyll for Dynamic Content
+
+Jekyll is a static site generator built into GitHub Pages. It transforms Markdown and Liquid templates into a complete static site.
+
+Create a `_config.yml` file:
+
+```yaml
+title: Your Name
+description: Full-Stack Developer & Designer
+baseurl: ""
+url: "https://yourusername.github.io"
+theme: minima
+```
+
+Then create a `_layouts/default.html` for your template and use Markdown for your content pages.
+
+### Step 4: Choose a Theme
+
+GitHub Pages supports several official Jekyll themes:
+
+- **Minima** — clean and minimal (default)
+- **Cayman** — bold, centered layout
+- **Slate** — dark theme
+- **Architect** — two-column layout
+- **Leap-day** — timeline-style
+
+To use a theme, update your `_config.yml`:
+
+```yaml
+theme: jekyll-theme-cayman
+```
+
+For third-party themes, look for Jekyll-compatible themes on [jamstackthemes.dev](https://jamstackthemes.dev/).
+
+### Step 5: Add a Custom Domain
+
+1. Create a file named `CNAME` in your repository root
+2. Add your domain: `www.yourname.com`
+3. In your DNS provider, add a CNAME record pointing `www` to `yourusername.github.io`
+4. For the apex domain, add an A record pointing to GitHub's IPs
+
+GitHub will automatically provision a Let's Encrypt SSL certificate for your custom domain.
+
+## SEO Tips for Your Portfolio
+
+### Meta Tags
+
+Add these to your `<head>`:
+
+```html
+<meta name="description" content="Full-stack developer specializing in React, Node.js, and cloud deployment." />
+<meta property="og:title" content="Your Name — Portfolio" />
+<meta property="og:description" content="Full-stack developer portfolio showcasing projects and skills." />
+<meta name="twitter:card" content="summary_large_image" />
+```
+
+### Structured Data
+
+Add JSON-LD for better search results:
+
+```html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Your Name",
+  "url": "https://yourusername.github.io",
+  "jobTitle": "Full-Stack Developer"
+}
+</script>
+```
+
+## Conclusion
+
+GitHub Pages remains one of the best free hosting options for developer portfolios. The combination of Git-based workflows, Jekyll templating, and free custom domains makes it an ideal choice for showcasing your work.
+
+In our next tutorial, we'll cover how to add a blog section to your GitHub Pages site using Jekyll collections.

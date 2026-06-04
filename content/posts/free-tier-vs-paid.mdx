@@ -1,0 +1,144 @@
+---
+title: 'Free Tier vs Paid: When to Upgrade Your Hosting'
+slug: free-tier-vs-paid
+date: 2025-06-15
+authors:
+  - shadow-gaming
+tags:
+  - opinion
+  - free-tier
+  - hosting
+  - scalability
+category: opinion
+excerpt: Free hosting tiers are incredibly generous, but they have limits. Here's how to recognize when your project has outgrown the free tier and what to upgrade to.
+cover:
+  src: /images/posts/cover-free-tier-vs-paid.jpg
+  alt: Comparison chart showing free vs paid hosting tiers
+featured: false
+draft: false
+---
+
+Free hosting tiers have become astonishingly generous. Cloudflare Pages offers unlimited bandwidth. Vercel provides 6,000 build minutes. Render includes managed PostgreSQL at no cost. These offerings make it possible to launch and grow a project without spending a cent on infrastructure.
+
+But the free tier is not a permanent home. Eventually, most successful projects outgrow it. The challenge is recognizing when that moment has arrived and choosing the right upgrade path.
+
+## Signs You've Outgrown the Free Tier
+
+### 1. You're Hitting Usage Limits
+
+The most obvious sign is hitting platform limits:
+
+- **Bandwidth caps** — Netlify's 100 GB limit goes faster than you'd think
+- **Build minutes** — 300 minutes on Netlify or 500 on Cloudflare
+- **Database storage** — 500 MB on Supabase or Neon fills up quickly
+- **Request limits** — 100,000 requests/day on Workers
+
+If you're checking your dashboard weekly or adjusting behavior to stay within limits, it's time to consider upgrading.
+
+### 2. Performance Is Suffering
+
+Free tiers often prioritize paid traffic during congestion:
+
+- Cold starts become more frequent
+- Build queues grow longer
+- Database queries slow down during peak hours
+
+A site loading in 3 seconds instead of 1 second costs you visitors. Every 100ms of latency reduces conversion by 7%.
+
+### 3. You Need Features Only Available on Paid Tiers
+
+Common features locked behind paid plans:
+
+- **Team collaboration** — multiple seats for your team
+- **Advanced analytics** — beyond basic page views
+- **SLA guarantees** — uptime commitments
+- **Priority support** — faster responses
+- **Custom metrics** — specific monitoring needs
+
+### 4. Your Project Is Generating Revenue
+
+If your project makes money, even a small amount, you owe it to your users to invest in reliable infrastructure. A $5/month VPS provides better performance and control than most free tiers.
+
+The math is simple: if you spend $20/month on infrastructure and your project generates $200/month, that's a 10x return.
+
+## What to Upgrade To
+
+### By Platform
+
+| Platform | Free tier | First paid tier | Cost | Key upgrade |
+|---|---|---|---|---|
+| Cloudflare Pages | Unlimited bandwidth | Workers Paid | $5/mo | 10M requests, 30ms CPU |
+| Vercel | 6,000 build min | Pro | $20/mo | Team seats, analytics |
+| Netlify | 300 build min | Pro | $19/mo | 1,000 build min, priority support |
+| Render | 750 hrs runtime | Starter | $7/mo | 2x CPU, 2x RAM |
+| Supabase | 500 MB DB | Pro | $25/mo | 8 GB DB, 50 GB bandwidth |
+| Neon | 500 MB DB | Launch | $19/mo | 3 GB DB, branching |
+| Railway | $5 credit | Developer | $5/mo | More containers, 2x credit |
+
+### By Service Type
+
+**Static sites:**
+- Free: Cloudflare Pages (unlimited bandwidth)
+- Upgrade: Cloudflare Workers Paid ($5/mo)
+
+**Full-stack apps:**
+- Free: Vercel + Supabase
+- Upgrade: Render Starter ($7/mo) + Supabase Pro ($25/mo)
+
+**APIs and backends:**
+- Free: Cloudflare Workers + D1
+- Upgrade: Railway Developer ($5/mo)
+
+**Database-heavy apps:**
+- Free: Supabase or Neon
+- Upgrade: Neon Launch ($19/mo) or Supabase Pro ($25/mo)
+
+## How to Upgrade Smoothly
+
+### Step 1: Audit Your Current Usage
+
+Before upgrading, understand what you actually need:
+
+```bash
+# Check your current limits
+- Bandwidth: Check platform dashboard
+- Storage: SELECT pg_database_size('yourdb');
+- Requests: Review analytics
+- Builds: Count deployments per month
+```
+
+### Step 2: Start with a Single Service
+
+Don't upgrade everything at once. Identify the bottleneck and upgrade that service first.
+
+### Step 3: Test on the Paid Tier
+
+Most platforms offer a free trial of paid tiers. Use it to verify that the upgrade solves your problem before committing.
+
+### Step 4: Monitor After Upgrade
+
+After upgrading, track:
+
+- Performance improvements (load times, TTFB)
+- Usage headroom (how close are you to new limits?)
+- Cost vs. value (is the upgrade worth it?)
+
+## When NOT to Upgrade
+
+Staying on the free tier makes sense when:
+
+- **Your project is a hobby** — no revenue expectations
+- **You're prototyping** — still validating the idea
+- **You're learning** — free tiers are great for education
+- **Traffic is low** — under 1,000 visitors per month
+- **You have no users yet** — pre-launch projects
+
+There's no shame in staying on the free tier. Some of the most successful products started on free infrastructure and stayed there for years.
+
+## Conclusion
+
+The right time to upgrade is when the free tier starts limiting your growth. For most projects, this happens when you hit 10,000–50,000 monthly active users or 100–500 GB of monthly bandwidth.
+
+The good news is that paid tiers are incredibly affordable. For $5–$25 per month, you get infrastructure that would have cost hundreds of dollars a decade ago.
+
+Upgrade when you need to — not before, not after.

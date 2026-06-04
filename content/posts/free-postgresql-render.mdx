@@ -1,0 +1,203 @@
+---
+title: Setting Up a Free PostgreSQL Database with Render
+slug: free-postgresql-render
+date: 2025-09-22
+authors:
+  - jordan-lee
+tags:
+  - postgresql
+  - database
+  - render
+  - tutorial
+  - backend
+category: tutorials
+excerpt: Learn how to provision a free PostgreSQL database on Render, connect from your application, and manage it with popular tools.
+cover:
+  src: /images/posts/cover-free-postgresql-render.jpg
+  alt: Render dashboard showing PostgreSQL database setup
+featured: false
+draft: false
+---
+
+PostgreSQL is one of the most powerful open source relational databases available. In this tutorial, we'll set up a free PostgreSQL instance on Render and connect it to a sample Node.js application.
+
+## Why Render for PostgreSQL?
+
+Render offers a free tier for PostgreSQL that includes:
+
+- **1 GB storage** — enough for small to medium applications
+- **100 concurrent connections** — handles development and light production use
+- **Automatic SSL** — encrypted connections by default
+- **Automated backups** — daily backups with 7-day retention
+- **Point-in-time recovery** — restore to any point in the last 24 hours
+
+## Step 1: Create a Render Account
+
+1. Go to [render.com](https://render.com) and sign up using GitHub, GitLab, or email
+2. Verify your email address
+3. You'll start on the free tier automatically
+
+## Step 2: Provision a PostgreSQL Database
+
+1. From the Render dashboard, click **New +** and select **PostgreSQL**
+2. Fill in the details:
+
+- **Name:** `my-app-db`
+- **Database:** `myapp` (this creates the database name)
+- **User:** `myapp_user` (automatically generated)
+- **Region:** Choose the closest to your users (Oregon, Frankfurt, or Singapore on free tier)
+- **PostgreSQL Version:** 16 (latest stable)
+
+3. Click **Create Database**
+
+Provisioning takes 2–5 minutes. You'll receive the connection details once it's ready.
+
+## Step 3: Get Your Connection String
+
+Once the database is ready, find your **Internal Connection String** and **External Connection String** in the dashboard.
+
+The connection string looks like:
+
+```
+postgresql://myapp_user:randompassword@dpg-xxxxx.oregon-postgres.render.com/myapp
+```
+
+- **Internal** — use from other Render services (faster, no egress)
+- **External** — use from your local machine or external services
+
+## Step 4: Connect from Node.js
+
+Install the `pg` client library:
+
+```bash
+npm install pg
+```
+
+Create a connection module:
+
+```javascript
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+module.exports = pool;
+```
+
+Test the connection:
+
+```javascript
+const pool = require('./db');
+
+async function testConnection() {
+  const client = await pool.connect();
+  try {
+    const result = await client.query('SELECT NOW()');
+    console.log('Connected at:', result.rows[0].now);
+  } finally {
+    client.release();
+  }
+}
+
+testConnection();
+```
+
+## Step 5: Create Tables
+
+Use the `psql` command-line tool or connect with a GUI client to create your schema:
+
+```sql
+CREATE TABLE projects (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  url VARCHAR(500),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE tags (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE project_tags (
+  project_id INTEGER REFERENCES projects(id),
+  tag_id INTEGER REFERENCES tags(id),
+  PRIMARY KEY (project_id, tag_id)
+);
+```
+
+## Step 6: Use a GUI Client (Optional)
+
+For visual database management, connect using:
+
+### TablePlus
+
+1. Open TablePlus and create a new PostgreSQL connection
+2. Paste your external connection string
+3. TablePlus will parse and fill in the fields automatically
+4. Connect and browse your database visually
+
+### pgAdmin
+
+1. Open pgAdmin and right-click **Servers > Register > Server**
+2. Name your connection
+3. Under the **Connection** tab:
+   - Host: your Render hostname
+   - Port: 5432
+   - Database: your database name
+   - Username: your username
+   - Password: your password
+4. Save and connect
+
+## Step 7: Set Up Automated Backups
+
+Render automatically backs up your database daily. You can also trigger manual backups:
+
+1. Go to your database dashboard
+2. Click **Backups** in the sidebar
+3. Click **Create Backup** for an instant snapshot
+
+Backups are retained for 7 days on the free tier.
+
+## Step 8: Monitor Performance
+
+The Render dashboard provides basic monitoring:
+
+- **CPU usage** — real-time and historical
+- **Memory usage** — track consumption patterns
+- **Connection count** — monitor active connections
+- **Disk usage** — stay within the 1 GB limit
+
+Set up notifications to alert you when you approach the storage limit.
+
+## Common Pitfalls
+
+### Connection Pooling
+
+Don't open a new connection for every request. Use connection pooling to reuse connections:
+
+```javascript
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 10, // maximum connections in the pool
+  idleTimeoutMillis: 30000,
+  ssl: { rejectUnauthorized: false }
+});
+```
+
+### SSL Configuration
+
+Render requires SSL connections. If you see an error like `no pg_hba.conf entry`, make sure you're connecting with SSL enabled.
+
+### Idle Connections
+
+The free tier limits concurrent connections. Ensure your application closes connections when not in use to avoid hitting the 100-connection limit.
+
+## Conclusion
+
+Render provides one of the easiest free PostgreSQL setups available. With automated backups, SSL encryption, and reasonable storage limits, it's an excellent choice for development, staging, and even small production applications.
+
+Next steps: Consider adding Redis with Render for caching, or explore Supabase for a more feature-rich PostgreSQL experience with real-time capabilities.

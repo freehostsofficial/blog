@@ -1,0 +1,140 @@
+---
+title: Getting Started with Cloudflare Pages
+slug: cloudflare-pages-guide
+date: 2026-02-15
+authors:
+  - alex-chen
+tags:
+  - cloudflare
+  - static-site
+  - deployment
+  - beginner
+category: guides
+excerpt: Learn how to deploy your first static site on Cloudflare Pages for free. This step-by-step guide covers setup, custom domains, and CI/CD integration.
+cover:
+  src: /images/posts/cover-cloudflare-pages-guide.jpg
+  alt: Cloudflare Pages dashboard showing deployment status
+  credit: Cloudflare
+featured: true
+draft: false
+---
+
+Cloudflare Pages has quickly become one of the most popular free hosting solutions for static sites and Jamstack applications. With its global edge network, automatic HTTPS, and seamless Git integration, it offers developers a powerful platform to deploy projects without spending a dime.
+
+In this guide, we'll walk through everything you need to know to get your first site live on Cloudflare Pages.
+
+## What is Cloudflare Pages?
+
+Cloudflare Pages is a JAMstack platform designed for frontend developers to deploy static sites and frontend applications. It integrates directly with your Git workflow, so every push to your repository triggers a new build and deployment.
+
+Key features of the free plan include:
+
+- **Unlimited bandwidth** — no monthly bandwidth caps
+- **Unlimited requests** — serve as many visitors as you want
+- **500 builds per month** — more than enough for personal projects
+- **3 build concurrency** — run multiple builds simultaneously
+- **Custom domains** — bring your own domain with free SSL
+- **Global edge network** — over 330 cities worldwide
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+1. A GitHub or GitLab account
+2. A static site project (HTML, React, Next.js, Hugo, etc.)
+3. Basic familiarity with Git commands
+
+## Step 1: Prepare Your Project
+
+Cloudflare Pages works with any static site generator or framework. Here's a minimal HTML project to get started:
+
+Create a folder called `my-site` with an `index.html` file:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Cloudflare Page</title>
+</head>
+<body>
+  <h1>Hello from Cloudflare Pages!</h1>
+</body>
+</html>
+```
+
+Initialize Git and push to a new repository:
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/yourusername/my-site.git
+git push -u origin main
+```
+
+## Step 2: Connect to Cloudflare
+
+1. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. Navigate to **Workers & Pages** in the left sidebar
+3. Click **Create application** and select **Pages**
+4. Click **Connect to Git**
+5. Authorize Cloudflare to access your GitHub or GitLab account
+6. Select the repository you just created
+
+## Step 3: Configure Build Settings
+
+Cloudflare will detect your framework automatically. For a plain HTML site:
+
+- **Build command:** leave blank (no build step needed)
+- **Build output directory:** leave as `/` (root)
+- **Root directory:** leave as `/`
+
+For framework projects:
+
+| Framework | Build command | Output directory |
+|---|---|---|
+| Next.js (static) | `npx next build && npx next export` | `out` |
+| React (Vite) | `npm run build` | `dist` |
+| Hugo | `hugo` | `public` |
+| Jekyll | `jekyll build` | `_site` |
+
+Click **Save and Deploy**. Your first deployment will start immediately.
+
+## Step 4: Add a Custom Domain
+
+Your site will be available at a `*.pages.dev` subdomain. To add a custom domain:
+
+1. Go to your project in the Cloudflare dashboard
+2. Click the **Custom domains** tab
+3. Enter your domain name (e.g., `mysite.com`)
+4. Update your DNS records to point to Cloudflare
+
+Cloudflare will automatically provision a free SSL certificate through Let's Encrypt.
+
+## Step 5: Set Up Automatic Deployments
+
+One of the best features of Cloudflare Pages is automatic deployments. Every time you push to your Git repository, Cloudflare will:
+
+1. Fetch the latest code
+2. Run the build command
+3. Deploy the output to the edge network
+4. Show you a deployment preview URL
+
+You can also set up **preview deployments** for pull requests, allowing you to review changes before merging to production.
+
+## Step 6: Environment Variables
+
+For sites that need API keys or configuration, Cloudflare Pages supports environment variables:
+
+1. Go to your project settings
+2. Click the **Environment variables** tab
+3. Add your variables (e.g., `API_URL`, `SITE_URL`)
+4. Choose whether they apply to production, preview, or both
+
+## Conclusion
+
+Cloudflare Pages offers one of the most generous free tiers in the hosting space. With unlimited bandwidth, automatic SSL, and global edge deployment, it's an excellent choice for personal projects, portfolios, and even production applications.
+
+In future articles, we'll explore more advanced features like Cloudflare Functions, redirect rules, and A/B testing with Pages.

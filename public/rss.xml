@@ -1,83 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>blog.freehosts.space</title>
+    <title>FreeHosts Blog</title>
     <link>https://blog.freehosts.space</link>
-    <description>The official blog for freehosts.space — guides, comparisons, tutorials, and community spotlights about free hosting.</description>
+    <description>The official blog for FreeHosts — guides, comparisons, tutorials, and community spotlights about free hosting.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 07 May 2026 21:10:25 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 04 Jun 2026 15:36:08 GMT</lastBuildDate>
     <atom:link href="https://blog.freehosts.space/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
-      <title><![CDATA[How to Deploy a Next.js App for Free in 2026]]></title>
-      <link>https://blog.freehosts.space/blog/guides/deploy-nextjs-free-2026/</link>
-      <guid isPermaLink="true">https://blog.freehosts.space/blog/guides/deploy-nextjs-free-2026/</guid>
-      <description><![CDATA[A complete walkthrough of deploying your Next.js application to free hosting platforms. From static exports to serverless functions, we cover every option available in 2026.]]></description>
-      <pubDate>Fri, 01 May 2026 00:00:00 GMT</pubDate>
-      <author>mia-santos, joe-clark</author>
+      <title><![CDATA[Getting Started with Cloudflare Pages]]></title>
+      <link>https://blog.freehosts.space/guides/cloudflare-pages-guide/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/guides/cloudflare-pages-guide/</guid>
+      <description><![CDATA[Learn how to deploy your first static site on Cloudflare Pages for free. This step-by-step guide covers setup, custom domains, and CI/CD integration.]]></description>
+      <pubDate>Sun, 15 Feb 2026 00:00:00 GMT</pubDate>
+      <author>alex-chen</author>
       <category>guides</category>
     </item>
     <item>
-      <title><![CDATA[Cloudflare Pages vs Vercel: The Free Tier Showdown]]></title>
-      <link>https://blog.freehosts.space/blog/opinion/cloudflare-pages-vs-vercel-free-tier/</link>
-      <guid isPermaLink="true">https://blog.freehosts.space/blog/opinion/cloudflare-pages-vs-vercel-free-tier/</guid>
-      <description><![CDATA[We put the two most popular free hosting platforms head to head. Bandwidth limits, build times, developer experience, and hidden gotchas — everything you need to choose.]]></description>
-      <pubDate>Sat, 25 Apr 2026 00:00:00 GMT</pubDate>
-      <author>joe-clark</author>
-      <category>opinion</category>
-    </item>
-    <item>
-      <title><![CDATA[Getting Started with Static Site Generators in 2026]]></title>
-      <link>https://blog.freehosts.space/blog/tutorials/getting-started-static-site-generators/</link>
-      <guid isPermaLink="true">https://blog.freehosts.space/blog/tutorials/getting-started-static-site-generators/</guid>
-      <description><![CDATA[New to static site generators? This beginner-friendly guide explains what they are, why they matter, and how to choose the right one for your project.]]></description>
-      <pubDate>Sat, 18 Apr 2026 00:00:00 GMT</pubDate>
-      <author>mia-santos</author>
-      <category>tutorials</category>
-    </item>
-    <item>
-      <title><![CDATA[The State of Free Hosting in 2026]]></title>
-      <link>https://blog.freehosts.space/blog/news/state-of-free-hosting-2026/</link>
-      <guid isPermaLink="true">https://blog.freehosts.space/blog/news/state-of-free-hosting-2026/</guid>
-      <description><![CDATA[Our annual roundup of the free hosting landscape. New players, improved tiers, and the platforms that quietly disappeared — here's everything that changed.]]></description>
-      <pubDate>Fri, 10 Apr 2026 00:00:00 GMT</pubDate>
-      <author>joe-clark, alex-rivera</author>
+      <title><![CDATA[Vercel Announces Free Hobby Plan Upgrades for 2026]]></title>
+      <link>https://blog.freehosts.space/news/vercel-hobby-upgrade/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/news/vercel-hobby-upgrade/</guid>
+      <description><![CDATA[Vercel has significantly upgraded its free Hobby plan for 2026, increasing build limits, adding new regions, and introducing community analytics.]]></description>
+      <pubDate>Tue, 20 Jan 2026 00:00:00 GMT</pubDate>
+      <author>maria-rodriguez</author>
       <category>news</category>
     </item>
     <item>
-      <title><![CDATA[Building a Portfolio Site That Actually Gets You Hired]]></title>
-      <link>https://blog.freehosts.space/blog/tutorials/portfolio-site-gets-hired/</link>
-      <guid isPermaLink="true">https://blog.freehosts.space/blog/tutorials/portfolio-site-gets-hired/</guid>
-      <description><![CDATA[Your portfolio is your first impression. Here's how to build one that stands out from the template crowd and actually lands you interviews.]]></description>
-      <pubDate>Sun, 05 Apr 2026 00:00:00 GMT</pubDate>
-      <author>alex-rivera</author>
+      <title><![CDATA[Build a Portfolio Site with GitHub Pages]]></title>
+      <link>https://blog.freehosts.space/tutorials/static-site-portfolio/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/tutorials/static-site-portfolio/</guid>
+      <description><![CDATA[Create a professional portfolio site for free using GitHub Pages and Jekyll. Includes setup, theming, custom domains, and SEO optimization.]]></description>
+      <pubDate>Wed, 10 Dec 2025 00:00:00 GMT</pubDate>
+      <author>jordan-lee</author>
       <category>tutorials</category>
     </item>
     <item>
-      <title><![CDATA[Community Spotlight: Open Source Projects Hosted for Free]]></title>
-      <link>https://blog.freehosts.space/blog/community/community-spotlight-open-source-free/</link>
-      <guid isPermaLink="true">https://blog.freehosts.space/blog/community/community-spotlight-open-source-free/</guid>
-      <description><![CDATA[Meet five open-source projects that run entirely on free hosting tiers. Their maintainers share what works, what breaks, and what they wish they knew earlier.]]></description>
-      <pubDate>Sat, 28 Mar 2026 00:00:00 GMT</pubDate>
-      <author>alex-rivera</author>
-      <category>community</category>
-    </item>
-    <item>
-      <title><![CDATA[Why Every Developer Should Own a Domain Name]]></title>
-      <link>https://blog.freehosts.space/blog/opinion/why-developers-own-domain/</link>
-      <guid isPermaLink="true">https://blog.freehosts.space/blog/opinion/why-developers-own-domain/</guid>
-      <description><![CDATA[A domain name costs less than a coffee per month. It's the single best investment you can make in your developer identity. Here's why.]]></description>
-      <pubDate>Fri, 20 Mar 2026 00:00:00 GMT</pubDate>
-      <author>mia-santos</author>
+      <title><![CDATA[Why Static Sites Are Making a Comeback in 2025]]></title>
+      <link>https://blog.freehosts.space/opinion/static-sites-comeback/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/opinion/static-sites-comeback/</guid>
+      <description><![CDATA[After years of server-side rendering dominance, static sites are experiencing a renaissance. Here's why developers are returning to simpler architectures.]]></description>
+      <pubDate>Wed, 05 Nov 2025 00:00:00 GMT</pubDate>
+      <author>alex-chen, maria-rodriguez</author>
       <category>opinion</category>
     </item>
     <item>
-      <title><![CDATA[Mastering Git for Solo Developers]]></title>
-      <link>https://blog.freehosts.space/blog/guides/mastering-git-solo-developers/</link>
-      <guid isPermaLink="true">https://blog.freehosts.space/blog/guides/mastering-git-solo-developers/</guid>
-      <description><![CDATA[Git isn't just for teams. A solid Git workflow makes solo development faster, safer, and more organized. Here's the workflow we recommend.]]></description>
-      <pubDate>Thu, 12 Mar 2026 00:00:00 GMT</pubDate>
-      <author>joe-clark</author>
+      <title><![CDATA[Best Free Hosting Platforms for Open Source Projects]]></title>
+      <link>https://blog.freehosts.space/community/free-hosting-open-source/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/community/free-hosting-open-source/</guid>
+      <description><![CDATA[A curated list of free hosting platforms that give open source projects production-grade infrastructure without the price tag.]]></description>
+      <pubDate>Sat, 18 Oct 2025 00:00:00 GMT</pubDate>
+      <author>maria-rodriguez</author>
+      <category>community</category>
+    </item>
+    <item>
+      <title><![CDATA[Setting Up a Free PostgreSQL Database with Render]]></title>
+      <link>https://blog.freehosts.space/tutorials/free-postgresql-render/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/tutorials/free-postgresql-render/</guid>
+      <description><![CDATA[Learn how to provision a free PostgreSQL database on Render, connect from your application, and manage it with popular tools.]]></description>
+      <pubDate>Mon, 22 Sep 2025 00:00:00 GMT</pubDate>
+      <author>jordan-lee</author>
+      <category>tutorials</category>
+    </item>
+    <item>
+      <title><![CDATA[Cloudflare Workers Now Support Python Runtime]]></title>
+      <link>https://blog.freehosts.space/news/cloudflare-workers-python/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/news/cloudflare-workers-python/</guid>
+      <description><![CDATA[Cloudflare has added native Python support to Workers, opening serverless edge computing to one of the world's largest developer communities.]]></description>
+      <pubDate>Thu, 14 Aug 2025 00:00:00 GMT</pubDate>
+      <author>alex-chen</author>
+      <category>news</category>
+    </item>
+    <item>
+      <title><![CDATA[How to Deploy a Static Site on Netlify for Free]]></title>
+      <link>https://blog.freehosts.space/guides/netlify-static-deploy/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/guides/netlify-static-deploy/</guid>
+      <description><![CDATA[A complete walkthrough for deploying a static site on Netlify's free tier, from Git connection to custom domain and form handling.]]></description>
+      <pubDate>Wed, 30 Jul 2025 00:00:00 GMT</pubDate>
+      <author>shadow-gaming</author>
       <category>guides</category>
+    </item>
+    <item>
+      <title><![CDATA[Interview: Building a SaaS on Free Infrastructure]]></title>
+      <link>https://blog.freehosts.space/community/saas-free-infrastructure/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/community/saas-free-infrastructure/</guid>
+      <description><![CDATA[We sat down with three indie developers who built profitable SaaS products entirely on free hosting tiers. Here's how they did it.]]></description>
+      <pubDate>Tue, 01 Jul 2025 00:00:00 GMT</pubDate>
+      <author>maria-rodriguez, shadow-gaming</author>
+      <category>community</category>
+    </item>
+    <item>
+      <title><![CDATA[Free Tier vs Paid: When to Upgrade Your Hosting]]></title>
+      <link>https://blog.freehosts.space/opinion/free-tier-vs-paid/</link>
+      <guid isPermaLink="true">https://blog.freehosts.space/opinion/free-tier-vs-paid/</guid>
+      <description><![CDATA[Free hosting tiers are incredibly generous, but they have limits. Here's how to recognize when your project has outgrown the free tier and what to upgrade to.]]></description>
+      <pubDate>Sun, 15 Jun 2025 00:00:00 GMT</pubDate>
+      <author>shadow-gaming</author>
+      <category>opinion</category>
     </item>
   </channel>
 </rss>

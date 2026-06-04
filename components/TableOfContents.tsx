@@ -1,50 +1,78 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import type { TocHeading } from '@/types';
+import { useState, useEffect } from 'react'
+import { List } from 'lucide-react'
+import { useInView } from '@/lib/useInView'
+import type { TocHeading } from '@/types'
 
-interface TableOfContentsProps {
-  headings: TocHeading[];
+interface Props {
+  headings: TocHeading[]
 }
 
-/** Sticky sidebar TOC that highlights the active heading on scroll */
-export function TableOfContents({ headings }: TableOfContentsProps) {
-  const [activeId, setActiveId] = useState('');
+export default function TableOfContents({ headings }: Props) {
+  const [activeId, setActiveId] = useState<string>('')
+  const { ref: tocRef, isInView } = useInView<HTMLDivElement>({ threshold: 0 })
 
   useEffect(() => {
+    if (!headings.length) return
+
     const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
+      entries => {
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+        if (visible.length > 0) {
+          setActiveId(visible[0].target.id)
         }
       },
-      { rootMargin: '-80px 0px -70% 0px' }
-    );
+      {
+        rootMargin: '-80px 0px -60% 0px',
+        threshold: 0,
+      }
+    )
 
-    for (const h of headings) {
-      const el = document.getElementById(h.id);
-      if (el) observer.observe(el);
-    }
+    headings.forEach(h => {
+      const el = document.getElementById(h.id)
+      if (el) observer.observe(el)
+    })
 
-    return () => observer.disconnect();
-  }, [headings]);
+    return () => observer.disconnect()
+  }, [headings])
 
-  if (headings.length === 0) return null;
+  if (!headings.length) return null
+
+  const tocList = (
+    <ol className="toc-list" role="list">
+      {headings.map(h => (
+        <li
+          key={h.id}
+          className={`toc-item toc-item--h${h.level}${activeId === h.id ? ' is-active' : ''}`}
+        >
+          <a href={`#${h.id}`} aria-current={activeId === h.id ? 'location' : undefined}>
+            {h.text}
+          </a>
+        </li>
+      ))}
+    </ol>
+  )
 
   return (
-    <aside className="toc-sidebar" aria-label="Table of contents">
-      <h4>On this page</h4>
-      {headings.map((h) => (
-        <a
-          key={h.id}
-          href={`#${h.id}`}
-          className={`${h.level === 3 ? 'h3' : ''} ${activeId === h.id ? 'active' : ''}`}
-        >
-          {h.text}
-        </a>
-      ))}
-    </aside>
-  );
+    <>
+      <aside ref={tocRef} className={`toc-sidebar${isInView ? '' : ''}`} aria-label="Table of contents">
+        <p className="toc-title">On this page</p>
+        {tocList}
+      </aside>
+
+      <details className="toc-accordion">
+        <summary>
+          <List size={14} aria-hidden="true" />
+          On this page
+          <span className="toc-accordion-chevron" aria-hidden="true">↓</span>
+        </summary>
+        <div className="toc-accordion-body">
+          {tocList}
+        </div>
+      </details>
+    </>
+  )
 }

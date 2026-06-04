@@ -1,62 +1,48 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { SITE_NAME, PARENT_URL, SITE_DESCRIPTION } from '@/lib/config';
+import type { Metadata } from 'next'
+import { SITE_NAME, SITE_URL } from '@/lib/config'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: `About ${SITE_NAME} — the official blog for freehosts.space.`,
-};
+  description: `Learn about ${SITE_NAME} — a community directory of free web hosting providers.`,
+  alternates: { canonical: '/about' },
+}
 
 export default function AboutPage() {
   return (
-    <div className="section">
-      <div className="page-header" style={{ padding: '0 0 1.5rem' }}>
-        <h1>About {SITE_NAME}</h1>
+    <main id="main-content">
+      <div className="container container--narrow" style={{ paddingTop: 'var(--sp-16)', paddingBottom: 'var(--sp-24)' }}>
+        <h1 style={{ marginBottom: 'var(--sp-8)' }}>About</h1>
+
+        <div className="prose">
+          <p>
+            {SITE_NAME} is a community-driven directory of free web hosting providers.
+            We review, compare, and document the best ways to host your projects
+            without spending a dime.
+          </p>
+
+          <h2>Our mission</h2>
+          <p>
+            We believe that cost should never be a barrier to learning and creating on the web.
+            Whether you are a student building your first site, a developer prototyping an idea,
+            or a small team looking to minimize overhead — there are excellent free hosting options
+            available.
+          </p>
+
+          <h2>What we cover</h2>
+          <ul>
+            <li><strong>Guides</strong> — Step-by-step tutorials for getting started with various free hosting platforms.</li>
+            <li><strong>Comparisons</strong> — Honest, detailed comparisons of features, limits, and performance.</li>
+            <li><strong>News</strong> — Updates about new features, policy changes, and industry trends.</li>
+            <li><strong>Community</strong> — Spotlights on projects and people building great things on free hosting.</li>
+          </ul>
+
+          <h2>Get in touch</h2>
+          <p>
+            Have a suggestion, correction, or want to contribute? Reach out through our{' '}
+            <a href={SITE_URL} target="_blank" rel="noopener noreferrer">main site</a>.
+          </p>
+        </div>
       </div>
-      <div className="about-content" style={{ padding: 0, maxWidth: '70ch' }}>
-        <p>
-          <strong>{SITE_NAME}</strong> is the editorial companion to{' '}
-          <a href={PARENT_URL} target="_blank" rel="noopener noreferrer">freehosts.space</a> — the
-          web&apos;s most comprehensive directory of free hosting providers. We cut through the noise
-          to bring you honest, in-depth content about deploying projects without spending a penny.
-        </p>
-
-        <h2>Our Mission</h2>
-        <p>
-          Cost should never be a barrier to getting online. Whether you&apos;re a student shipping
-          your first side project, a developer testing an idea, or a community organiser who needs a
-          website — there&apos;s a free tier out there for you. Our job is to help you find it and
-          make the most of it.
-        </p>
-
-        <h2>What We Write About</h2>
-        <p>
-          Every article falls into one of five categories:{' '}
-          <strong>Guides</strong> with step-by-step deployment walkthroughs,{' '}
-          <strong>Tutorials</strong> for picking up new skills,{' '}
-          <strong>News</strong> covering industry changes and platform updates,{' '}
-          <strong>Opinion</strong> offering our editorial take on the ecosystem, and{' '}
-          <strong>Community</strong> spotlighting the people and projects that make free hosting
-          thrive.
-        </p>
-
-        <h2>Who We Are</h2>
-        <p>
-          The blog is run by a small team of writers and editors who live and breathe web hosting.
-          We test every platform we write about, and we&apos;re not afraid to call out the catches
-          hiding behind a &ldquo;free&rdquo; label.
-        </p>
-        <p>
-          <Link href="/authors">Meet our authors →</Link>
-        </p>
-
-        <h2>Get In Touch</h2>
-        <p>
-          Have a story idea, a correction, or just want to say hello? Reach out to us on{' '}
-          <a href="https://x.com/freehosts" target="_blank" rel="noopener noreferrer">Twitter / X</a>{' '}
-          — we read everything.
-        </p>
-      </div>
-    </div>
-  );
+    </main>
+  )
 }

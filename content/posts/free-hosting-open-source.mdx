@@ -1,0 +1,136 @@
+---
+title: Best Free Hosting Platforms for Open Source Projects
+slug: free-hosting-open-source
+date: 2025-10-18
+authors:
+  - maria-rodriguez
+tags:
+  - open-source
+  - hosting
+  - free-tier
+  - community
+category: community
+excerpt: A curated list of free hosting platforms that give open source projects production-grade infrastructure without the price tag.
+cover:
+  src: /images/posts/cover-free-hosting-open-source.jpg
+  alt: Collage of logos from free hosting platforms
+featured: false
+draft: false
+---
+
+Open source projects have always needed reliable hosting, but not every project has sponsorship or funding. Fortunately, the ecosystem of free hosting has never been stronger. Here's our curated list of platforms that provide production-grade infrastructure for open source projects at no cost.
+
+## Static Sites and Frontends
+
+### Cloudflare Pages
+
+Cloudflare Pages offers unlimited bandwidth and requests on its free tier, making it ideal for open source documentation and project websites.
+
+- **Limits:** 500 builds/month, 3 concurrent builds
+- **Features:** Edge network (330+ cities), automatic HTTPS, custom domains
+- **Best for:** Project documentation, landing pages, static dashboards
+
+### Vercel
+
+Vercel's free Hobby plan is generous with its 6,000 build minutes per month and serverless function support.
+
+- **Limits:** 100 GB bandwidth, 500 GB-hours serverless execution
+- **Features:** Automatic preview deployments, Edge Functions, analytics
+- **Best for:** Next.js projects, frontend applications, API prototypes
+
+### Netlify
+
+Netlify pioneered the JAMstack workflow and remains a strong choice for open source projects.
+
+- **Limits:** 300 build minutes, 100 GB bandwidth
+- **Features:** Deploy previews, form handling, serverless functions
+- **Best for:** Hugo sites, React SPAs, community sites
+
+## Backend and APIs
+
+### Railway
+
+Railway offers a free tier that includes $5 of usage credit monthly — enough for small backend services.
+
+- **Limits:** $5 credit, 500 hours of container runtime
+- **Features:** PostgreSQL, Redis, automatic HTTPS, custom domains
+- **Best for:** API backends, Discord bots, small microservices
+
+### Render
+
+Render's free tier includes static sites, web services, PostgreSQL, and Redis.
+
+- **Limits:** 750 hours of runtime per month (enough for a single always-on service)
+- **Features:** Automatic SSL, Git deploy, managed databases
+- **Best for:** Full-stack apps, API services, databases
+
+### Fly.io
+
+Fly.io runs applications close to users with its global edge network.
+
+- **Limits:** 3 shared VMs, 3 GB persistent storage
+- **Features:** Global anycast, WireGuard VPN, Docker support
+- **Best for:** Containerized apps, real-time services, global deployments
+
+## Database Hosting
+
+### Supabase
+
+Supabase is an open source Firebase alternative with a generous free tier.
+
+- **Limits:** 500 MB database, 1 GB file storage, 50,000 monthly active users
+- **Features:** PostgreSQL, real-time subscriptions, authentication, storage
+- **Best for:** Full-stack apps requiring a database, auth, and storage
+
+### Neon
+
+Neon offers serverless PostgreSQL with branching workflows.
+
+- **Limits:** 500 MB storage, 100 hours compute time per month
+- **Features:** Database branching, point-in-time restore, connection pooling
+- **Best for:** Developer tooling, CI/CD test databases, prototyping
+
+## CI/CD and Build Services
+
+### GitHub Actions
+
+GitHub Actions provides CI/CD for open source projects completely free.
+
+- **Limits:** 2,000 minutes/month for public repositories
+- **Features:** Extensive marketplace, matrix builds, self-hosted runners
+- **Best for:** Any GitHub-hosted open source project
+
+### CircleCI
+
+CircleCI offers free builds for open source projects with additional resources.
+
+- **Limits:** 6,000 build minutes/month for open source
+- **Features:** Docker layer caching, parallelism, SSH debugging
+- **Best for:** Projects needing faster build times or specialized environments
+
+## How to Get the Most Out of Free Tiers
+
+### Combine Platforms
+
+Don't host everything on one platform. Use specialized services for each layer:
+
+```
+Frontend: Cloudflare Pages (unlimited bandwidth)
+API:      Render (750 hours free)
+Database: Supabase (500 MB free)
+Storage:  Cloudflare R2 (10 GB free)
+```
+
+### Use Multiple Accounts Strategically
+
+For larger projects, consider separating staging and production. Use one account for production and another for development and preview environments.
+
+### Monitor Usage
+
+Set up usage alerts for your accounts. Most platforms will email you when you approach limits, but it's better to check proactively.
+
+## Conclusion
+
+The free hosting ecosystem for open source projects has never been more robust. By selecting the right combination of platforms, you can run a production-grade application serving thousands of users without spending a penny on infrastructure.
+
+Have a favorite free hosting platform we missed? Let us know in the comments or reach out on social media.

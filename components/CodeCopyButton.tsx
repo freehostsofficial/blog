@@ -1,41 +1,49 @@
-'use client';
+'use client'
 
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
-/** Adds copy buttons to all <pre> code blocks on the page */
-export function CodeCopyButton() {
+export default function CodeCopyButton() {
   useEffect(() => {
-    const blocks = document.querySelectorAll('pre[data-lang]');
-    blocks.forEach((el) => {
-      const pre = el as HTMLElement;
-      if (pre.querySelector('.copy-btn')) return; // already added
+    const preBlocks = document.querySelectorAll<HTMLElement>('pre[data-lang]')
 
-      const btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.setAttribute('aria-label', 'Copy code to clipboard');
+    preBlocks.forEach(pre => {
+      if (pre.querySelector('.code-copy-btn')) return
+
+      const btn = document.createElement('button')
+      btn.className = 'code-copy-btn'
+      btn.setAttribute('aria-label', 'Copy code to clipboard')
+      const copyIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>'
+      const checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+      
+      btn.innerHTML = copyIcon
 
       btn.addEventListener('click', async () => {
-        const code = pre.querySelector('code');
-        if (!code) return;
+        const code = pre.querySelector('code')?.innerText ?? pre.innerText
         try {
-          await navigator.clipboard.writeText(code.textContent || '');
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(() => {
-            btn.textContent = 'Copy';
-            btn.classList.remove('copied');
-          }, 2000);
+          await navigator.clipboard.writeText(code)
         } catch {
-          btn.textContent = 'Failed';
-          setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+          const ta = document.createElement('textarea')
+          ta.value = code
+          ta.style.cssText = 'position:absolute;left:-9999px'
+          document.body.appendChild(ta)
+          ta.select()
+          document.execCommand('copy')
+          ta.remove()
         }
-      });
 
-      pre.style.position = 'relative';
-      pre.appendChild(btn);
-    });
-  }, []);
+        btn.innerHTML = checkIcon
+        btn.classList.add('is-copied')
+        btn.setAttribute('aria-label', 'Code copied to clipboard')
+        setTimeout(() => {
+          btn.innerHTML = copyIcon
+          btn.classList.remove('is-copied')
+          btn.setAttribute('aria-label', 'Copy code to clipboard')
+        }, 2000)
+      })
 
-  return null;
+      pre.appendChild(btn)
+    })
+  }, [])
+
+  return null
 }

@@ -1,55 +1,46 @@
-import Link from 'next/link';
-import type { Author } from '@/types';
+import Link from 'next/link'
+import Image from 'next/image'
+import { formatDate, getInitials } from '@/lib/utils'
+import type { Author } from '@/types'
 
-interface AuthorBylineProps {
-  authors: Author[];
-  date: string;
-  readingTime: number;
-  /** When false, author names are plain text (use inside clickable cards to avoid nested <a>) */
-  linked?: boolean;
+interface Props {
+  authors: Author[]
+  date: string
+  readingTime: number
 }
 
-/** Inline byline with overlapping avatars, linked names, date, and reading time */
-export function AuthorByline({ authors, date, readingTime, linked = true }: AuthorBylineProps) {
-  const formattedDate = new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
+export default function AuthorByline({ authors, date, readingTime }: Props) {
   return (
-    <div className="byline">
-      <div className="byline-avatars">
-        {authors.map((author) => (
-          <img
-            key={author.slug}
-            src={author.avatar}
-            alt={author.name}
-            className="byline-avatar"
-            width={28}
-            height={28}
-            loading="lazy"
-          />
-        ))}
-      </div>
-      <span>
-        {authors.map((author, i) => (
-          <span key={author.slug}>
-            {i > 0 && <span className="byline-sep">, </span>}
-            {linked ? (
-              <Link href={`/authors/${author.slug}`} className="byline-name">
-                {author.name}
-              </Link>
-            ) : (
-              <span className="byline-name">{author.name}</span>
-            )}
+    <div className="author-byline">
+      <div className="author-byline-avatars" aria-hidden="true">
+        {authors.slice(0, 3).map(author => (
+          <span key={author.slug} className="avatar-xs" title={author.name}>
+            {author.avatar
+              ? <Image src={author.avatar} alt={author.name} width={24} height={24} />
+              : getInitials(author.name)
+            }
           </span>
         ))}
-      </span>
-      <span className="byline-sep">·</span>
-      <time dateTime={date}>{formattedDate}</time>
-      <span className="byline-sep">·</span>
-      <span>{readingTime} min read</span>
+      </div>
+
+      <div className="author-byline-text">
+        <span className="author-byline-names">
+          {authors.map((a, i) => (
+            <span key={a.slug}>
+              <Link href={`/authors/${a.slug}`}>{a.name}</Link>
+              {i < authors.length - 1 && ', '}
+            </span>
+          ))}
+        </span>
+        <span className="author-byline-dot" aria-hidden="true"> · </span>
+        <time dateTime={date}>{formatDate(date)}</time>
+        {readingTime > 0 && (
+          <>
+            <span className="author-byline-dot" aria-hidden="true"> · </span>
+            <span>{readingTime} min read</span>
+          </>
+        )}
+      </div>
     </div>
-  );
+  )
 }

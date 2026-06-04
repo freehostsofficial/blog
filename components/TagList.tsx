@@ -1,18 +1,23 @@
-import Link from 'next/link';
+import Link from 'next/link'
 
-interface TagListProps {
-  tags: string[];
+interface Props {
+  tags: string[]
+  linked?: boolean
 }
 
-/** Row of #tag-name chips with sharp corners, each linking to /tags/[tag] */
-export function TagList({ tags }: TagListProps) {
+export default function TagList({ tags, linked = true }: Props) {
+  if (!tags?.length) return null
   return (
-    <div className="tag-list">
-      {tags.map((tag) => (
-        <Link key={tag} href={`/tags/${tag}`} className="tag-chip">
-          #{tag}
-        </Link>
-      ))}
+    <div className="tag-list" role="list" aria-label="Post tags">
+      {tags.map(tag =>
+        linked ? (
+          <Link key={tag} href={`/tags/${tag}`} className="badge" role="listitem">
+            #{tag}
+          </Link>
+        ) : (
+          <span key={tag} className="badge" role="listitem">#{tag}</span>
+        )
+      )}
     </div>
-  );
+  )
 }

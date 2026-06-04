@@ -1,0 +1,144 @@
+---
+title: 'Interview: Building a SaaS on Free Infrastructure'
+slug: saas-free-infrastructure
+date: 2025-07-01
+authors:
+  - maria-rodriguez
+  - shadow-gaming
+tags:
+  - interview
+  - saas
+  - community
+  - open-source
+  - hosting
+category: community
+excerpt: We sat down with three indie developers who built profitable SaaS products entirely on free hosting tiers. Here's how they did it.
+cover:
+  src: /images/posts/cover-saas-free-infrastructure.jpg
+  alt: Three indie developers in a video call discussing their SaaS products
+featured: false
+draft: false
+---
+
+Can you build a profitable SaaS product without spending a dime on infrastructure? We interviewed three indie developers who prove the answer is yes.
+
+## The Participants
+
+**Sarah Chen** — Creator of _FormBee_, a form backend service handling 50,000+ submissions monthly
+
+**Marcus Johnson** — Founder of _UptimeKit_, a website monitoring service tracking 2,000+ sites
+
+**Priya Patel** — Developer of _ImageOpt_, an image optimization API processing 100,000+ images per week
+
+## The Stack
+
+### Sarah Chen — FormBee
+
+"FormBee started as a side project. I needed a form backend for my portfolio and couldn't justify paying $10/month for something that handles maybe 100 submissions."
+
+**Infrastructure:**
+
+- **Frontend:** Cloudflare Pages (free tier — unlimited bandwidth)
+- **API:** Cloudflare Workers (100,000 requests/day free)
+- **Database:** D1 — Cloudflare's serverless SQLite (free tier)
+- **Email:** SendGrid free tier (100 emails/day)
+- **Auth:** Clerk (free tier — 5,000 active users)
+- **DNS:** Cloudflare (free)
+
+**Monthly cost: $0**
+
+"The key was choosing Cloudflare for everything. Their integrated ecosystem means Workers can access D1 with zero latency. When I needed email notifications, SendGrid's free tier covered it."
+
+**Current scale:** FormBee handles 50,000 submissions per month across 1,200 users. The free tier still covers everything.
+
+**Near the limit:** "The 100,000 requests/day on Workers is my closest limit. I'm at about 60,000 now, so I have room to grow."
+
+### Marcus Johnson — UptimeKit
+
+"Uptime monitoring doesn't need complex infrastructure — it needs reliable scheduled jobs and a simple dashboard."
+
+**Infrastructure:**
+
+- **Frontend:** Vercel (Hobby plan — 100 GB bandwidth)
+- **Cron jobs:** GitHub Actions (2,000 min/month on public repos) — runs checks every 5 minutes
+- **Database:** Supabase (500 MB free tier)
+- **API routes:** Next.js API routes on Vercel
+- **Notifications:** Email via Supabase Edge Functions
+- **Status page:** Cloudflare Pages (unlimited bandwidth)
+
+**Monthly cost: $0**
+
+"The GitHub Actions cron was my biggest win. Running checks every 5 minutes costs nothing on a public repo. The action pings the monitored sites and writes results to Supabase."
+
+**Current scale:** 2,000 monitored sites, 7,000 checks per day.
+
+**Near the limit:** "Supabase's 500 MB database is my tightest constraint. I'm using about 300 MB now, mostly storing check history. I'm adding data retention policies to stay within limits."
+
+### Priya Patel — ImageOpt
+
+"Image optimization is CPU-intensive. I needed to process images without expensive servers."
+
+**Infrastructure:**
+
+- **CLI tool:** Open source on GitHub
+- **API endpoint:** Cloudflare Workers + Python runtime
+- **Image storage:** Cloudflare R2 (10 GB free)
+- **Cache:** Cloudflare Cache API
+- **Documentation:** Docusaurus on GitHub Pages
+- **Website:** Netlify (free tier — 100 GB bandwidth)
+
+**Monthly cost: $0**
+
+"The Cloudflare Workers Python support was a game-changer. I could use Pillow for image processing without managing any servers. R2's free 10 GB handles storage, and the egress to Workers is free."
+
+**Current scale:** 100,000+ images processed per week, 30,000 active users.
+
+**Near the limit:** "CPU time on Workers. Each optimization takes about 8ms, and with 100,000 images per week, I'm using about 800 seconds of CPU time per week. I have room but will need to optimize or upgrade if traffic doubles."
+
+## Common Patterns
+
+Across all three stories, several patterns emerged:
+
+### 1. Start Simple
+
+Every founder started with the simplest possible architecture. No microservices, no complex orchestration — just a frontend, some logic, and a database.
+
+### 2. Use Integrated Ecosystems
+
+Choosing one platform for multiple services (Cloudflare Workers + D1 + R2, or Vercel + Next.js + Supabase) reduced complexity and latency.
+
+### 3. Design for the Free Tier
+
+Each founder designed their product around the constraints of the free tier, implementing features like:
+
+- Data retention limits to stay within storage bounds
+- Rate limiting to stay within request quotas
+- Efficient data structures to minimize CPU time
+
+### 4. Monitor Usage Proactively
+
+"No one wants to wake up to a bill because they exceeded the free tier." — Marcus
+
+All three set up usage monitoring and alerts well before limits.
+
+### 5. Keep an Exit Strategy
+
+While currently free, each founder has a plan for when they outgrow the free tier:
+
+- Sarah: Upgrade Workers to paid ($5/month for 10M requests)
+- Marcus: Move to a $5 VPS for the cron worker
+- Priya: Upgrade R2 to paid ($0.015/GB/month)
+
+## Advice for New Developers
+
+**Sarah:** "Don't over-engineer for scale you don't have yet. My entire backend was a single Worker file for the first six months."
+
+**Marcus:** "Public GitHub repos give you so much free CI time. Open source your SaaS as 'source available' and you get free builds, free CI, free everything."
+
+**Priya:** "Choose platforms that have generous free tiers AND reasonable paid plans. You don't want to rebuild everything when you need to scale."
+
+## Conclusion
+
+Building a SaaS on entirely free infrastructure is not only possible — it's becoming increasingly common. The key is choosing the right combination of platforms, designing within constraints, and having a clear upgrade path for when you outgrow the free tier.
+
+Have you built something on free infrastructure? We'd love to hear your story. Reach out to us to be featured in a future interview.

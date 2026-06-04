@@ -2,11 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://blog.freehosts.space/</loc>
-    <lastmod>2026-05-01</lastmod>
+    <lastmod>Sun Feb 15 2026 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/</loc>
-    <lastmod>2026-05-01</lastmod>
+    <loc>https://blog.freehosts.space/posts/</loc>
+    <lastmod>Sun Feb 15 2026 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/archive/</loc>
+    <lastmod>Sun Feb 15 2026 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
   </url>
   <url>
     <loc>https://blog.freehosts.space/authors/</loc>
@@ -18,113 +22,151 @@
     <loc>https://blog.freehosts.space/about/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/guides/deploy-nextjs-free-2026/</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://blog.freehosts.space/guides/cloudflare-pages-guide/</loc>
+    <lastmod>Sun Feb 15 2026 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/opinion/cloudflare-pages-vs-vercel-free-tier/</loc>
-    <lastmod>2026-04-25</lastmod>
+    <loc>https://blog.freehosts.space/news/vercel-hobby-upgrade/</loc>
+    <lastmod>Tue Jan 20 2026 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/tutorials/getting-started-static-site-generators/</loc>
-    <lastmod>2026-04-18</lastmod>
+    <loc>https://blog.freehosts.space/tutorials/static-site-portfolio/</loc>
+    <lastmod>Wed Dec 10 2025 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/news/state-of-free-hosting-2026/</loc>
-    <lastmod>2026-04-10</lastmod>
+    <loc>https://blog.freehosts.space/opinion/static-sites-comeback/</loc>
+    <lastmod>Wed Nov 05 2025 00:00:00 GMT+0000 (Western European Standard Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/tutorials/portfolio-site-gets-hired/</loc>
-    <lastmod>2026-04-05</lastmod>
+    <loc>https://blog.freehosts.space/community/free-hosting-open-source/</loc>
+    <lastmod>Sat Oct 18 2025 01:00:00 GMT+0100 (Western European Summer Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/community/community-spotlight-open-source-free/</loc>
-    <lastmod>2026-03-28</lastmod>
+    <loc>https://blog.freehosts.space/tutorials/free-postgresql-render/</loc>
+    <lastmod>Mon Sep 22 2025 01:00:00 GMT+0100 (Western European Summer Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/opinion/why-developers-own-domain/</loc>
-    <lastmod>2026-03-20</lastmod>
+    <loc>https://blog.freehosts.space/news/cloudflare-workers-python/</loc>
+    <lastmod>Thu Aug 14 2025 01:00:00 GMT+0100 (Western European Summer Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/guides/mastering-git-solo-developers/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <loc>https://blog.freehosts.space/guides/netlify-static-deploy/</loc>
+    <lastmod>Wed Jul 30 2025 01:00:00 GMT+0100 (Western European Summer Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/guides/</loc>
+    <loc>https://blog.freehosts.space/community/saas-free-infrastructure/</loc>
+    <lastmod>Tue Jul 01 2025 01:00:00 GMT+0100 (Western European Summer Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/news/</loc>
+    <loc>https://blog.freehosts.space/opinion/free-tier-vs-paid/</loc>
+    <lastmod>Sun Jun 15 2025 01:00:00 GMT+0100 (Western European Summer Time)</lastmod>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/tutorials/</loc>
+    <loc>https://blog.freehosts.space/guides/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/opinion/</loc>
+    <loc>https://blog.freehosts.space/news/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/blog/community/</loc>
+    <loc>https://blog.freehosts.space/tutorials/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/authors/alex-rivera/</loc>
+    <loc>https://blog.freehosts.space/opinion/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/authors/joe-clark/</loc>
+    <loc>https://blog.freehosts.space/community/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/authors/mia-santos/</loc>
+    <loc>https://blog.freehosts.space/authors/alex-chen/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/free-hosting/</loc>
+    <loc>https://blog.freehosts.space/authors/jordan-lee/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/getting-started/</loc>
+    <loc>https://blog.freehosts.space/authors/maria-rodriguez/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/tutorials/</loc>
+    <loc>https://blog.freehosts.space/authors/shadow-gaming/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/career/</loc>
+    <loc>https://blog.freehosts.space/tags/hosting/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/nextjs/</loc>
+    <loc>https://blog.freehosts.space/tags/static-site/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/deployment/</loc>
+    <loc>https://blog.freehosts.space/tags/free-tier/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/tutorial/</loc>
   </url>
   <url>
     <loc>https://blog.freehosts.space/tags/cloudflare/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/vercel/</loc>
+    <loc>https://blog.freehosts.space/tags/deployment/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/comparison/</loc>
-  </url>
-  <url>
-    <loc>https://blog.freehosts.space/tags/static-sites/</loc>
-  </url>
-  <url>
-    <loc>https://blog.freehosts.space/tags/industry/</loc>
+    <loc>https://blog.freehosts.space/tags/beginner/</loc>
   </url>
   <url>
     <loc>https://blog.freehosts.space/tags/news/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/portfolio/</loc>
-  </url>
-  <url>
-    <loc>https://blog.freehosts.space/tags/community/</loc>
+    <loc>https://blog.freehosts.space/tags/opinion/</loc>
   </url>
   <url>
     <loc>https://blog.freehosts.space/tags/open-source/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/domains/</loc>
+    <loc>https://blog.freehosts.space/tags/community/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/opinion/</loc>
+    <loc>https://blog.freehosts.space/tags/vercel/</loc>
   </url>
   <url>
-    <loc>https://blog.freehosts.space/tags/git/</loc>
+    <loc>https://blog.freehosts.space/tags/github-pages/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/portfolio/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/jamstack/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/web-development/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/postgresql/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/database/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/render/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/backend/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/python/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/serverless/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/workers/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/netlify/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/interview/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/saas/</loc>
+  </url>
+  <url>
+    <loc>https://blog.freehosts.space/tags/scalability/</loc>
   </url>
 </urlset>
