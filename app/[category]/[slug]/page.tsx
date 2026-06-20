@@ -68,7 +68,7 @@ function renderMdxToHtml(content: string): string {
   result = result.replace(
     /<(h[23])>(.*?)<\/\1>/g,
     (_, tag, text) => {
-      const plainText = text.replace(/<[^>]*>/g, '')
+      const plainText = new DOMParser().parseFromString(text, 'text/html').body.textContent ?? ''
       const id = plainText.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
       return `<${tag} id="${id}">${text}</${tag}>`
     }
