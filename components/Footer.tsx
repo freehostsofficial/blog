@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Rss, ArrowUp } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { SITE_NAME } from '@/lib/config'
 
 const EXPLORE_LINKS = [
@@ -20,52 +21,65 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="site-footer">
-      <div className="container">
-        <div className="footer-grid">
-
-          <div className="footer-col">
-            <Link href="/" className="footer-brand">{SITE_NAME}</Link>
-            <p className="footer-desc">
+    <footer className="border-t border-glass-border mt-auto">
+      <div className="container-blog py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 pb-10 border-b border-glass-border">
+          <div className="space-y-3">
+            <Link
+              href="/"
+              className="font-semibold text-lg tracking-tight text-foreground no-underline hover:no-underline"
+            >
+              {SITE_NAME}
+            </Link>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               A community directory of free web hosting providers. News,
               guides, and tutorials for developers who want hosting without
               the price tag.
             </p>
           </div>
 
-          <div className="footer-col">
-            <h3 className="footer-heading">Explore</h3>
-            <ul className="footer-links" role="list">
+          <div className="space-y-3">
+            <h3 className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
+              Explore
+            </h3>
+            <ul className="flex flex-col gap-2" role="list">
               {EXPLORE_LINKS.map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href}>{label}</Link>
+                  <Button variant="link" size="sm" className="h-auto p-0 text-muted-foreground hover:text-foreground" nativeButton={false} render={<Link href={href} />}>
+                    {label}
+                  </Button>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="footer-col">
-            <h3 className="footer-heading">Resources</h3>
-            <ul className="footer-links" role="list">
+          <div className="space-y-3">
+            <h3 className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
+              Resources
+            </h3>
+            <ul className="flex flex-col gap-2" role="list">
               {RESOURCE_LINKS.map(({ href, label, external }) => (
                 <li key={href}>
-                  <a
-                    href={href}
-                    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  >
-                    {label === 'RSS Feed' && <Rss size={12} aria-hidden="true" />}
+                  <Button variant="link" size="sm" className="h-auto p-0 text-muted-foreground hover:text-foreground gap-1.5" nativeButton={false} render={
+                    <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} />
+                  }>
+                    {label === 'RSS Feed' && <Rss className="size-3" />}
                     {label}
-                  </a>
+                  </Button>
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        <div className="footer-bottom">
+        <div className="flex items-center justify-between flex-wrap gap-4 pt-6 text-xs text-muted-foreground">
           <span>© {year} {SITE_NAME}. All rights reserved.</span>
-          <a href="#main-content" className="back-to-top" aria-label="Back to top of page" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            Back to top <ArrowUp size={14} />
+          <a
+            href="#main-content"
+            className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground no-underline transition-colors"
+            aria-label="Back to top of page"
+          >
+            Back to top <ArrowUp className="size-3" />
           </a>
         </div>
       </div>

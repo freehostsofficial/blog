@@ -1,33 +1,30 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
-import Link from 'next/link'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Search, SearchX, Loader2 } from 'lucide-react'
-import Fuse from 'fuse.js'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { SearchEntry } from '@/types'
+import Fuse from 'fuse.js'
 
 interface Props {
   onClose: () => void
 }
 
 export default function SearchDialog({ onClose }: Props) {
-  const [query, setQuery]     = useState('')
+  const [query, setQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [entries, setEntries] = useState<SearchEntry[]>([])
-  const [loaded, setLoaded]   = useState(false)
-  const [error, setError]     = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const [error, setError] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
 
-  const inputRef      = useRef<HTMLInputElement>(null)
-  const dialogRef     = useRef<HTMLDivElement>(null)
-  const resultsRef    = useRef<HTMLDivElement>(null)
-  const debounceRef   = useRef<ReturnType<typeof setTimeout>>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const resultsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => setDebouncedQuery(query), 250)
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
+    const timer = setTimeout(() => setDebouncedQuery(query), 250)
+    return () => clearTimeout(timer)
   }, [query])
 
   const fuse = useMemo(
@@ -50,61 +47,34 @@ export default function SearchDialog({ onClose }: Props) {
   }, [debouncedQuery, fuse, loaded])
 
   useEffect(() => {
-    const load = () => {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        fetch('/search-index.json')
+          .then(r => r.json())
+          .then((data: SearchEntry[]) => {
+            setEntries(data)
+            setLoaded(true)
+          })
+          .catch(() => { setError(true); setLoaded(true) })
+      }, { timeout: 500 })
+    } else {
       fetch('/search-index.json')
-        .then(r => {
-          if (!r.ok) throw new Error('Failed to load search index')
-          return r.json()
-        })
+        .then(r => r.json())
         .then((data: SearchEntry[]) => {
           setEntries(data)
           setLoaded(true)
         })
-        .catch(() => {
-          setError(true)
-          setLoaded(true)
-        })
-    }
-    if ('requestIdleCallback' in window) {
-      const id = requestIdleCallback(load, { timeout: 500 })
-      return () => cancelIdleCallback(id)
-    } else {
-      load()
+        .catch(() => { setError(true); setLoaded(true) })
     }
   }, [])
 
   useEffect(() => {
-    const timer = setTimeout(() => inputRef.current?.focus(), 50)
-    return () => clearTimeout(timer)
+    setTimeout(() => inputRef.current?.focus(), 50)
   }, [])
 
   useEffect(() => {
-    const dialog = dialogRef.current
-    if (!dialog) return
-
-    const focusable = () =>
-      Array.from(
-        dialog.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])'
-        )
-      ).filter(el => !el.closest('[aria-hidden="true"]'))
-
     const onKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { onClose(); return }
-
-      if (e.key === 'Tab') {
-        const els = focusable()
-        if (!els.length) return
-        const first = els[0]
-        const last  = els[els.length - 1]
-        if (e.shiftKey) {
-          if (document.activeElement === first) { e.preventDefault(); last.focus() }
-        } else {
-          if (document.activeElement === last) { e.preventDefault(); first.focus() }
-        }
-      }
-
-      if (e.key === 'ArrowDown') {
+      if (e.key === 'ArrowDown' && results.length > 0) {
         e.preventDefault()
         setActiveIndex(i => Math.min(i + 1, results.length - 1))
       }
@@ -120,139 +90,116 @@ export default function SearchDialog({ onClose }: Props) {
         }
       }
     }
-
     document.addEventListener('keydown', onKeydown)
     return () => document.removeEventListener('keydown', onKeydown)
-  }, [onClose, results, activeIndex])
+  }, [results, activeIndex, onClose])
 
   useEffect(() => {
-    if (activeIndex < 0) return
     const el = resultsRef.current?.children[activeIndex] as HTMLElement
     el?.scrollIntoView({ block: 'nearest' })
   }, [activeIndex])
 
-  const onOverlayClick = useCallback((e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) onClose()
+  const handleSelect = useCallback((category: string, slug: string) => {
+    onClose()
+    window.location.href = `/${category}/${slug}`
   }, [onClose])
 
-  const isEmpty = debouncedQuery.trim().length > 0 && results.length === 0 && loaded
-
   return (
-    <div
-      className="search-overlay"
-      onClick={onOverlayClick}
-      aria-label="Search overlay"
-    >
-      <div
-        ref={dialogRef}
-        className="search-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Search posts"
-        aria-describedby="search-instructions"
-      >
-        <span id="search-instructions" className="sr-only">
-          Type to search posts. Use arrow keys to navigate results, Enter to open.
-        </span>
+    <Dialog open onOpenChange={(open) => { if (!open) onClose() }}>
+      <DialogContent className="sm:max-w-xl p-0 gap-0 glass overflow-hidden" showCloseButton={false}>
+        <DialogHeader className="sr-only">
+          <DialogTitle>Search posts</DialogTitle>
+        </DialogHeader>
 
-        <div className="search-input-row">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-glass-border">
           {loaded && !error
-            ? <Search size={16} aria-hidden="true" />
-            : <Loader2 size={16} aria-hidden="true" className="search-spinner" />
+            ? <Search className="size-4 text-muted-foreground shrink-0" />
+            : <Loader2 className="size-4 text-muted-foreground shrink-0 animate-spin" />
           }
-          <label htmlFor="search-input" className="sr-only">Search posts</label>
           <input
             ref={inputRef}
-            id="search-input"
             type="search"
-            className="search-input"
+            className="flex-1 bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground"
             placeholder={loaded ? 'Search posts…' : 'Loading…'}
             value={query}
-            onChange={e => { setQuery(e.target.value); setActiveIndex(-1); }}
+            onChange={e => { setQuery(e.target.value); setActiveIndex(-1) }}
             disabled={!loaded}
             autoComplete="off"
             spellCheck={false}
-            aria-autocomplete="list"
-            aria-controls="search-results"
-            aria-activedescendant={activeIndex >= 0 ? `result-${activeIndex}` : undefined}
           />
-          <kbd className="search-kbd" aria-label="Escape to close">Esc</kbd>
+          <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+            Esc
+          </kbd>
         </div>
 
-        <div
-          id="search-results"
-          ref={resultsRef}
-          className="search-results"
-          role="listbox"
-          aria-label="Search results"
-        >
+        <div ref={resultsRef} className="max-h-80 overflow-y-auto" role="listbox" aria-label="Search results">
           {!loaded && !error && (
-            <div className="search-skeletons" aria-busy="true" aria-label="Loading search index">
+            <div className="p-4 space-y-3" aria-busy="true">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="search-skeleton-row">
-                  <Skeleton variant="text" width="60%" />
-                  <Skeleton variant="text-sm" width="35%" style={{ marginTop: '0.35rem' }} />
+                <div key={i} className="space-y-1">
+                  <Skeleton className="h-4 w-3/5" />
+                  <Skeleton className="h-3 w-2/5" />
                 </div>
               ))}
             </div>
           )}
 
-          {error && (
-            <div className="search-empty" role="status">
-              <SearchX size={20} aria-hidden="true" />
-              <p>Could not load search index. Try reloading the page.</p>
-            </div>
-          )}
-
           {loaded && !error && !debouncedQuery.trim() && (
-            <div className="search-empty" role="status">
-              <p>Start typing to search all posts…</p>
+            <div className="py-10 text-center text-sm text-muted-foreground">
+              Start typing to search all posts…
             </div>
           )}
 
-          {isEmpty && (
-            <div className="search-empty" role="status">
-              <SearchX size={20} aria-hidden="true" />
-              <p>No results for <strong>&quot;{debouncedQuery}&quot;</strong></p>
+          {error && (
+            <div className="py-10 text-center text-sm text-destructive">
+              Could not load search index. Try again.
+            </div>
+          )}
+
+          {loaded && !error && debouncedQuery.trim() && results.length === 0 && (
+            <div className="py-10 text-center text-sm text-muted-foreground space-y-1">
+              <SearchX className="size-5 mx-auto mb-2" />
+              <p>No results for <strong className="text-foreground">&ldquo;{debouncedQuery}&rdquo;</strong></p>
             </div>
           )}
 
           {results.map((entry, i) => (
-            <Link
+            <button
               key={entry.slug}
               id={`result-${i}`}
-              href={`/${entry.category}/${entry.slug}`}
-              className="search-result-item"
+              className={cn(
+                "w-full text-left px-4 py-3 border-b border-glass-border last:border-0 transition-colors",
+                i === activeIndex ? "bg-accent" : "hover:bg-accent/50"
+              )}
               role="option"
               aria-selected={i === activeIndex}
-              onClick={onClose}
-              tabIndex={0}
+              onClick={() => handleSelect(entry.category, entry.slug)}
             >
-              <div className="search-result-top">
-                <span className="badge badge--category">{entry.category}</span>
+              <div className="flex items-center gap-2 mb-1">
+                <Badge variant="secondary" className="text-[10px] px-1.5 py-0">{entry.category}</Badge>
               </div>
-              <div className="search-result-title">{entry.title}</div>
+              <div className="text-sm font-medium text-foreground">{entry.title}</div>
               {entry.excerpt && (
-                <div className="search-result-excerpt">{entry.excerpt}</div>
+                <div className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{entry.excerpt}</div>
               )}
-              <div className="search-result-meta">
-                {entry.tags?.slice(0, 3).map(tag => (
-                  <span key={tag} className="search-result-tag">#{tag}</span>
-                ))}
-              </div>
-            </Link>
+              {entry.tags?.length > 0 && (
+                <div className="flex gap-2 mt-1">
+                  {entry.tags.slice(0, 3).map(tag => (
+                    <span key={tag} className="text-[10px] text-muted-foreground">#{tag}</span>
+                  ))}
+                </div>
+              )}
+            </button>
           ))}
         </div>
 
-        <div className="search-footer" aria-hidden="true">
-          <span><kbd>↑↓</kbd> navigate</span>
-          <span><kbd>↵</kbd> open</span>
-          <span><kbd>Esc</kbd> close</span>
-          <span style={{ marginLeft: 'auto' }}>
-            {loaded && `${entries.length} posts indexed`}
-          </span>
+        <div className="hidden sm:flex items-center gap-4 px-4 py-2 border-t border-glass-border text-[10px] text-muted-foreground">
+          <span><kbd className="inline-flex h-4 items-center rounded border bg-muted px-1 font-mono text-[9px]">↑↓</kbd> navigate</span>
+          <span><kbd className="inline-flex h-4 items-center rounded border bg-muted px-1 font-mono text-[9px]">↵</kbd> open</span>
+          <span><kbd className="inline-flex h-4 items-center rounded border bg-muted px-1 font-mono text-[9px]">Esc</kbd> close</span>
+          <span className="ml-auto">{loaded && `${entries.length} posts indexed`}</span>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }

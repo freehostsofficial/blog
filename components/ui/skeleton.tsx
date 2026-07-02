@@ -1,19 +1,13 @@
-interface SkeletonProps {
-  variant?: 'text' | 'title' | 'avatar' | 'image' | 'card' | 'badge' | 'text-sm'
-  width?: string
-  height?: string
-  className?: string
-  style?: React.CSSProperties
-}
+import { cn } from "@/lib/utils"
 
-export function Skeleton({ variant = 'text', width, height, className = '', style }: SkeletonProps) {
-  const variantClass = variant !== 'text' ? ` skeleton--${variant}` : ''
-  const combinedStyle = { ...(width ? { width } : {}), ...(height ? { height } : {}), ...style }
+function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={`skeleton${variantClass}${className ? ` ${className}` : ''}`}
-      style={combinedStyle}
-      aria-hidden="true"
+      data-slot="skeleton"
+      className={cn("animate-pulse rounded-md bg-muted", className)}
+      {...props}
     />
   )
 }
+
+export { Skeleton }

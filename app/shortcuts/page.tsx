@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Kbd } from '@/components/ui/kbd'
 
 export const metadata: Metadata = {
   title: 'Keyboard Shortcuts',
@@ -8,43 +10,43 @@ export const metadata: Metadata = {
 
 const shortcuts = [
   { key: '?', label: 'Toggle this cheat sheet' },
-  { key: '⌘ / Ctrl + K', label: 'Open search' },
+  { key: '⌘K / Ctrl+K', label: 'Open search' },
   { key: '/', label: 'Focus search' },
-  { key: 'Alt + T', label: 'Toggle dark / light mode' },
-  { key: 'Alt + H', label: 'Go to Home page' },
-  { key: 'Alt + P', label: 'Go to Posts' },
-  { key: 'Alt + A', label: 'Go to Archive' },
-  { key: 'Alt + S', label: 'Go to Shortcuts page' },
-  { key: 'Alt + R', label: 'Go to a random post' },
+  { key: 'Alt+T', label: 'Toggle dark / light mode' },
+  { key: 'Alt+H', label: 'Go to Home page' },
+  { key: 'Alt+P', label: 'Go to Posts' },
+  { key: 'Alt+A', label: 'Go to Archive' },
+  { key: 'Alt+S', label: 'Go to Shortcuts page' },
+  { key: 'Alt+R', label: 'Go to a random post' },
   { key: 'Esc', label: 'Close modals / dialogs' },
 ]
 
 export default function ShortcutsPage() {
   return (
     <main id="main-content">
-      <div className="container" style={{ paddingTop: 'var(--sp-16)', paddingBottom: 'var(--sp-24)' }}>
-        <header className="page-header">
-          <h1>Keyboard Shortcuts</h1>
-          <p>Press <kbd className="search-kbd">?</kbd> at any time to toggle this reference.</p>
+      <div className="container-blog py-16 pb-24">
+        <header className="pb-8 mb-10 border-b border-glass-border">
+          <h1 className="text-3xl font-semibold tracking-tight mb-2">Keyboard Shortcuts</h1>
+          <p className="text-muted-foreground">Press <Kbd>?</Kbd> at any time to toggle this reference.</p>
         </header>
 
-        <div className="shortcuts-table-wrap">
-          <table className="shortcuts-table">
-            <thead>
-              <tr>
-                <th>Shortcut</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
+        <div className="glass rounded-xl overflow-hidden max-w-lg">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-1/2">Shortcut</TableHead>
+                <TableHead>Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {shortcuts.map(s => (
-                <tr key={s.key}>
-                  <td><kbd className="search-kbd">{s.key}</kbd></td>
-                  <td>{s.label}</td>
-                </tr>
+                <TableRow key={s.key}>
+                  <TableCell><Kbd>{s.key}</Kbd></TableCell>
+                  <TableCell className="text-muted-foreground">{s.label}</TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </div>
     </main>

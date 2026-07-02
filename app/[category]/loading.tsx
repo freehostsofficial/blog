@@ -3,33 +3,27 @@ import { Skeleton } from '@/components/ui/skeleton'
 export default function CategoryLoading() {
   return (
     <main id="main-content" aria-busy="true" aria-label="Loading category">
-      <div className="filter-bar" role="navigation" aria-label="Filter posts by category">
-        <div className="container">
-          <div className="filter-bar-inner">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} variant="badge" width="5rem" style={{ height: '2.25rem' }} />
-            ))}
-          </div>
+      <div className="sticky top-14 z-40 glass border-b border-glass-border mb-8">
+        <div className="container-blog flex gap-1 py-2">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-8 w-20 rounded-lg" />
+          ))}
         </div>
       </div>
-
-      <div className="container">
-        <header className="page-header">
-          <Skeleton variant="title" width="10rem" />
-          <Skeleton variant="text-sm" width="5rem" style={{ marginTop: 'var(--sp-2)' }} />
-        </header>
-
-        <div className="post-grid">
+      <div className="container-blog">
+        <Skeleton className="h-8 w-40 mb-2" />
+        <Skeleton className="h-4 w-24 mb-10" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <article key={i} className="post-card">
-              <Skeleton variant="image" />
-              <div className="post-card-content">
-                <Skeleton variant="text-sm" width="30%" />
-                <Skeleton variant="title" width="90%" style={{ marginTop: 'var(--sp-2)' }} />
-                <Skeleton variant="text" width="100%" style={{ marginTop: 'var(--sp-2)' }} />
-                <Skeleton variant="text" width="65%" />
+            <div key={i} className="glass rounded-xl overflow-hidden">
+              <Skeleton className="aspect-video w-full rounded-none" />
+              <div className="p-4 space-y-2">
+                <Skeleton className="h-3 w-16" />
+                <Skeleton className="h-5 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
               </div>
-            </article>
+            </div>
           ))}
         </div>
       </div>

@@ -4,8 +4,9 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import PostCard from '@/components/PostCard'
 import FilterBar from '@/components/FilterBar'
-import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import { POSTS_PER_PAGE } from '@/lib/config'
 import type { Post } from '@/types'
 
@@ -25,49 +26,51 @@ function PostsContent({ allPosts, categoryCounts }: Props) {
   return (
     <main id="main-content">
       <FilterBar categoryCounts={categories} />
-      <div className="container">
-        <header className="page-header">
-          <h1>All Posts</h1>
-          <p>{allPosts.length} articles</p>
+      <div className="container-blog">
+        <header className="pb-8 mb-10 border-b border-glass-border">
+          <h1 className="text-3xl font-semibold tracking-tight mb-2">All Posts</h1>
+          <p className="text-muted-foreground">{allPosts.length} articles</p>
         </header>
 
-        <div className="post-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {pagePosts.map(post => (
             <PostCard key={post.slug} post={post} />
           ))}
         </div>
 
         {totalPages > 1 && (
-          <nav className="pagination" aria-label="Posts pagination">
-            <Link
-              href={currentPage > 1 ? `/posts?page=${currentPage - 1}` : '#'}
-              className={`pagination-btn${currentPage <= 1 ? ' is-disabled' : ''}`}
-              aria-disabled={currentPage <= 1}
-              aria-label="Previous page"
+          <nav className="flex items-center justify-center gap-2 py-8" aria-label="Posts pagination">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={currentPage <= 1}
+              nativeButton={false}
+              render={<Link href={currentPage > 1 ? `/posts?page=${currentPage - 1}` : '#'} aria-label="Previous page" />}
             >
-              <ArrowLeft size={16} /> Previous
-            </Link>
+              <ArrowLeft className="size-3.5" /> Previous
+            </Button>
 
             {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-              <Link
+              <Button
                 key={p}
-                href={`/posts?page=${p}`}
-                className={`pagination-btn${p === currentPage ? ' is-active' : ''}`}
-                aria-current={p === currentPage ? 'page' : undefined}
-                aria-label={`Page ${p}`}
+                variant={p === currentPage ? "default" : "outline"}
+                size="sm"
+                nativeButton={false}
+                render={<Link href={`/posts?page=${p}`} aria-current={p === currentPage ? 'page' : undefined} aria-label={`Page ${p}`} />}
               >
                 {p}
-              </Link>
+              </Button>
             ))}
 
-            <Link
-              href={currentPage < totalPages ? `/posts?page=${currentPage + 1}` : '#'}
-              className={`pagination-btn${currentPage >= totalPages ? ' is-disabled' : ''}`}
-              aria-disabled={currentPage >= totalPages}
-              aria-label="Next page"
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={currentPage >= totalPages}
+              nativeButton={false}
+              render={<Link href={currentPage < totalPages ? `/posts?page=${currentPage + 1}` : '#'} aria-label="Next page" />}
             >
-              Next <ArrowRight size={16} />
-            </Link>
+              Next <ArrowRight className="size-3.5" />
+            </Button>
           </nav>
         )}
       </div>
@@ -79,9 +82,7 @@ export default function PostsClient(props: Props) {
   return (
     <Suspense fallback={
       <main id="main-content">
-        <div className="container" style={{ paddingTop: 'var(--sp-16)', textAlign: 'center', color: 'var(--c-text-3)' }}>
-          Loading posts...
-        </div>
+        <div className="container-blog py-16 text-center text-muted-foreground">Loading posts...</div>
       </main>
     }>
       <PostsContent {...props} />

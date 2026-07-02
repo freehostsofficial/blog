@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Badge } from '@/components/ui/badge'
 
 interface Props {
   tags: string[]
@@ -8,14 +9,14 @@ interface Props {
 export default function TagList({ tags, linked = true }: Props) {
   if (!tags?.length) return null
   return (
-    <div className="tag-list" role="list" aria-label="Post tags">
+    <div className="flex flex-wrap gap-2" role="list" aria-label="Post tags">
       {tags.map(tag =>
         linked ? (
-          <Link key={tag} href={`/tags/${tag}`} className="badge" role="listitem">
-            #{tag}
+          <Link key={tag} href={`/tags/${tag}`} className="no-underline">
+            <Badge variant="outline" role="listitem">#{tag}</Badge>
           </Link>
         ) : (
-          <span key={tag} className="badge" role="listitem">#{tag}</span>
+          <Badge key={tag} variant="outline" role="listitem">#{tag}</Badge>
         )
       )}
     </div>

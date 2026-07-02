@@ -30,18 +30,16 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   return (
     <main id="main-content">
       <FilterBar categoryCounts={categories} />
-      <div className="container">
-        <header className="page-header">
-          <h1>{label}</h1>
-          <p>{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+      <div className="container-blog">
+        <header className="pb-8 mb-10 border-b border-glass-border">
+          <h1 className="text-3xl font-semibold tracking-tight mb-2">{label}</h1>
+          <p className="text-muted-foreground">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
         </header>
 
         {posts.length === 0 ? (
-          <p className="container" style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--c-text-3)' }}>
-            No posts in this category yet.
-          </p>
+          <p className="text-center py-12 text-muted-foreground">No posts in this category yet.</p>
         ) : (
-          <div className="post-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {posts.map(post => (
               <PostCard key={post.slug} post={post} />
             ))}

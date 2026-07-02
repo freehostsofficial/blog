@@ -24,6 +24,7 @@ function parsePostFile(filename: string): Post {
 
   return {
     ...frontmatter,
+    date: frontmatter.date instanceof Date ? frontmatter.date.toISOString().split('T')[0] : frontmatter.date,
     content,
     readingTime: calculateReadingTime(content),
   };

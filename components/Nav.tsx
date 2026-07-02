@@ -2,9 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
-import { Search, Sun, Moon, Menu, X } from 'lucide-react'
+import { Search, Sun, Moon, Menu } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { cn } from '@/lib/utils'
 import dynamic from 'next/dynamic'
 
 const SearchDialog = dynamic(() => import('./SearchDialog'), {
@@ -18,26 +21,11 @@ const NAV_LINKS = [
   { href: '/authors', label: 'Authors' },
   { href: '/archive', label: 'Archive' },
   { href: '/about',   label: 'About'   },
-  { href: '/shortcuts', label: 'Shortcuts' },
 ]
 
 export default function Nav() {
   const pathname = usePathname()
-  const { resolvedTheme, setTheme } = useTheme()
-  const [mounted, setMounted]         = useState(false)
-  const [searchOpen, setSearchOpen]   = useState(false)
-  const [menuOpen, setMenuOpen]       = useState(false)
-  const searchTriggerRef              = useRef<HTMLButtonElement>(null)
-
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 0)
-    return () => clearTimeout(timer)
-  }, [])
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [menuOpen])
+  const [searchOpen, setSearchOpen] = useState(false)
 
   useEffect(() => {
     const onKeydown = (e: KeyboardEvent) => {
@@ -45,123 +33,121 @@ export default function Nav() {
         e.preventDefault()
         setSearchOpen(true)
       }
-      if (e.key === 'Escape') {
-        setSearchOpen(false)
-        setMenuOpen(false)
-      }
     }
     document.addEventListener('keydown', onKeydown)
     return () => document.removeEventListener('keydown', onKeydown)
   }, [])
 
+  const { resolvedTheme, setTheme, mounted } = useTheme()
   const isDark = resolvedTheme === 'dark'
 
   return (
     <>
-      <nav className="site-nav" aria-label="Main navigation">
-        <div className="container nav-inner">
-
-          <Link href="/" className="nav-brand" aria-label="FreeHosts — go to homepage">
+      <nav className="fixed top-0 left-0 right-0 z-50 h-14 glass border-b border-glass-border" aria-label="Main navigation">
+        <div className="container-blog h-full flex items-center gap-8">
+          <Link
+            href="/"
+            className="font-semibold text-lg tracking-tight text-foreground hover:text-primary transition-colors shrink-0 no-underline hover:no-underline"
+            aria-label="FreeHosts — go to homepage"
+          >
             FreeHosts
           </Link>
 
-          <ul className="nav-links" role="list" aria-label="Site sections">
+          <div className="hidden md:flex items-center gap-1" role="list" aria-label="Site sections">
             {NAV_LINKS.map(({ href, label }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className="nav-link"
-                  aria-current={pathname.startsWith(href) ? 'page' : undefined}
-                >
-                  {label}
-                </Link>
-              </li>
+              <Button
+                key={href}
+                variant="ghost"
+                size="sm"
+                nativeButton={false}
+                render={<Link href={href} aria-current={pathname.startsWith(href) ? 'page' : undefined} />}
+                className={cn(pathname.startsWith(href) && "bg-muted")}
+              >
+                {label}
+              </Button>
             ))}
-          </ul>
+          </div>
 
-          <div className="nav-actions">
-            <button
-              ref={searchTriggerRef}
-              className="nav-search-hint"
+          <div className="flex items-center gap-2 ml-auto">
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setSearchOpen(true)}
               aria-label="Search posts (Ctrl+K or Cmd+K)"
-              aria-keyshortcuts="Control+k Meta+k"
+              className="hidden sm:inline-flex text-muted-foreground gap-2"
             >
-              <Search size={13} aria-hidden="true" />
-              <span aria-hidden="true">Search</span>
-              <kbd aria-hidden="true">⌘K</kbd>
-            </button>
+              <Search className="size-3.5" />
+              <span>Search</span>
+              <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground ml-1">
+                ⌘K
+              </kbd>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search"
+              className="sm:hidden"
+            >
+              <Search className="size-4" />
+            </Button>
 
             {mounted ? (
-              <button
-                className="nav-icon-btn"
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setTheme(isDark ? 'light' : 'dark')}
                 aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
               >
-                {isDark
-                  ? <Sun  size={16} aria-hidden="true" />
-                  : <Moon size={16} aria-hidden="true" />}
-              </button>
+                {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+              </Button>
             ) : (
-              <div className="nav-icon-btn" aria-hidden="true" />
+              <div className="size-8" aria-hidden="true" />
             )}
 
-            <button
-              className="nav-icon-btn nav-mobile-toggle"
-              onClick={() => setMenuOpen(v => !v)}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-nav-menu"
-              aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            >
-              {menuOpen
-                ? <X    size={18} aria-hidden="true" />
-                : <Menu size={18} aria-hidden="true" />}
-            </button>
+            <Sheet>
+              <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" aria-label="Open navigation menu" />}>
+                <Menu className="size-4" />
+              </SheetTrigger>
+              <SheetContent side="right" className="w-72 glass">
+                <SheetHeader>
+                  <SheetTitle className="sr-only">Navigation</SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-1 mt-6" aria-label="Mobile navigation">
+                  {NAV_LINKS.map(({ href, label }) => (
+                    <Button
+                      key={href}
+                      variant="ghost"
+                      className={cn(
+                        "justify-start text-base h-10",
+                        pathname.startsWith(href) && "bg-muted text-foreground"
+                      )}
+                      nativeButton={false}
+                      render={<Link href={href} />}
+                    >
+                      {label}
+                    </Button>
+                  ))}
+                  <Button
+                    variant="ghost"
+                    className="justify-start text-base h-10 gap-3"
+                    onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                  >
+                    {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+                    {isDark ? 'Light mode' : 'Dark mode'}
+                  </Button>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </nav>
-
-      <div
-        id="mobile-nav-menu"
-        className={`nav-mobile-menu${menuOpen ? ' is-open' : ''}`}
-        aria-hidden={!menuOpen}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation menu"
-      >
-        <nav aria-label="Mobile navigation">
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="nav-mobile-link"
-              aria-current={pathname.startsWith(href) ? 'page' : undefined}
-              tabIndex={menuOpen ? 0 : -1}
-              onClick={() => setMenuOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
-
-        {mounted && (
-          <button
-            className="nav-mobile-theme-btn"
-            onClick={() => setTheme(isDark ? 'light' : 'dark')}
-            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-            tabIndex={menuOpen ? 0 : -1}
-          >
-            {isDark ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
-            {isDark ? 'Light mode' : 'Dark mode'}
-          </button>
-        )}
-      </div>
 
       {searchOpen && (
         <SearchDialog
           onClose={() => {
             setSearchOpen(false)
-            requestAnimationFrame(() => searchTriggerRef.current?.focus())
           }}
         />
       )}

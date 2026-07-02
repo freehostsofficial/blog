@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 import { CATEGORY_LABELS, type Category } from '@/types'
 
 const ALL_CATEGORY_SLUGS = ['guides', 'tutorials', 'news', 'opinion', 'community']
@@ -20,32 +21,36 @@ export default function FilterBar({ categoryCounts }: Props) {
   const isAllActive = pathname === '/posts'
 
   return (
-    <div className="filter-bar" role="navigation" aria-label="Filter posts by category">
-      <div className="container">
-        <div className="filter-bar-inner">
-          <Link
-            href="/posts"
-            className={`filter-tab${isAllActive ? ' is-active' : ''}`}
-            aria-current={isAllActive ? 'page' : undefined}
+    <div className="sticky top-14 z-40 glass border-b border-glass-border mb-8" role="navigation" aria-label="Filter posts by category">
+      <div className="container-blog">
+        <div className="flex items-center gap-1 py-2 overflow-x-auto scrollbar-none">
+          <Button
+            variant={isAllActive ? "default" : "ghost"}
+            size="sm"
+            nativeButton={false}
+            render={<Link href="/posts" aria-current={isAllActive ? 'page' : undefined} />}
+            className="shrink-0"
           >
             All posts
-          </Link>
+          </Button>
 
           {ALL_CATEGORY_SLUGS.map(slug => {
             const count = categoryCounts?.get(slug) ?? 0
             const isActive = activeCategory === slug
             return (
-              <Link
+              <Button
                 key={slug}
-                href={`/${slug}`}
-                className={`filter-tab${isActive ? ' is-active' : ''}`}
-                aria-current={isActive ? 'page' : undefined}
+                variant={isActive ? "default" : "ghost"}
+                size="sm"
+                nativeButton={false}
+                render={<Link href={`/${slug}`} aria-current={isActive ? 'page' : undefined} />}
+                className="shrink-0 gap-1"
               >
                 {CATEGORY_LABELS[slug as Category] ?? slug}
-                <span className="filter-tab-count" aria-label={`${count} posts`}>
-                  {count}
-                </span>
-              </Link>
+                {count > 0 && (
+                  <span className="text-xs opacity-60">({count})</span>
+                )}
+              </Button>
             )
           })}
         </div>

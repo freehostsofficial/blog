@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { getAllTags, getPostsByTag } from '@/lib/tags'
 import PostCard from '@/components/PostCard'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft } from 'lucide-react'
 import { SITE_URL } from '@/lib/config'
 
 export function generateStaticParams() {
@@ -24,16 +26,14 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
 
   return (
     <main id="main-content">
-      <div className="container" style={{ paddingTop: 'var(--sp-12)' }}>
-        <Link href="/tags" className="btn btn--ghost btn--sm" style={{ marginBottom: 'var(--sp-6)' }}>
-          ← Back to all tags
-        </Link>
-        <header className="page-header">
-          <h1>#{tag}</h1>
-          <p>{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+      <div className="container-blog pt-12">
+        <Button variant="ghost" size="sm" className="mb-6" nativeButton={false} render={<Link href="/tags" />}><ArrowLeft className="size-3.5" /> Back to all tags</Button>
+        <header className="pb-8 mb-10 border-b border-glass-border">
+          <h1 className="text-3xl font-semibold tracking-tight mb-2">#{tag}</h1>
+          <p className="text-muted-foreground">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
         </header>
 
-        <div className="post-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {posts.map(post => (
             <PostCard key={post.slug} post={post} />
           ))}

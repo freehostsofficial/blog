@@ -12,13 +12,14 @@ import CodeCopyButton from '@/components/CodeCopyButton'
 import PostCard from '@/components/PostCard'
 import { ReadingProgress } from '@/components/ReadingProgress'
 import { ShareButtons } from '@/components/ShareButtons'
+import { Badge } from '@/components/ui/badge'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Marked } from 'marked'
 import { markedHighlight } from 'marked-highlight'
 import hljs from 'highlight.js'
 import { CATEGORY_LABELS } from '@/types'
 import { SITE_URL, SITE_NAME } from '@/lib/config'
 import type { TocHeading } from '@/types'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 function extractHeadings(content: string): TocHeading[] {
   const headings: TocHeading[] = []
@@ -38,65 +39,29 @@ function renderMdxToHtml(content: string): string {
     markedHighlight({
       langPrefix: 'hljs language-',
       highlight(code: string, lang: string) {
-        if (lang && hljs.getLanguage(lang)) {
-          return hljs.highlight(code, { language: lang }).value
-        }
+        if (lang && hljs.getLanguage(lang)) return hljs.highlight(code, { language: lang }).value
         return hljs.highlightAuto(code).value
       },
     })
   )
 
-  const cleaned = content
-    .replace(/^import\s+.*$/gm, '')
-    .replace(/^export\s+.*$/gm, '')
-    .trim()
+  let html = marked.parse(
+    content.replace(/^import\s+.*$/gm, '').replace(/^export\s+.*$/gm, '').trim(),
+    { gfm: true, breaks: false }
+  ) as string
 
-  const html = marked.parse(cleaned, {
-    gfm: true,
-    breaks: false,
-  }) as string
+  html = html
+    .replace(/<pre><code class="hljs language-(\w+)">/g, '<pre data-lang="$1"><code class="hljs language-$1">')
+    .replace(/<pre><code>/g, '<pre data-lang="text"><code class="hljs">')
+    .replace(/<table>/g, '<div class="table-wrapper"><table>')
+    .replace(/<\/table>/g, '</table></div>')
+    .replace(/<a\s+href="(?!\/)([^"]+)"/g, '<a href="$1" target="_blank" rel="noopener noreferrer"')
 
-  let result = html.replace(
-    /<pre><code class="hljs language-(\w+)">/g,
-    '<pre data-lang="$1"><code class="hljs language-$1">'
-  )
-  result = result.replace(
-    /<pre><code>/g,
-    '<pre data-lang="text"><code class="hljs">'
-  )
-
-  result = result.replace(
-    /<(h[23])>(.*?)<\/\1>/g,
-    (_, tag, text) => {
-      const plainText = new DOMParser().parseFromString(text, 'text/html').body.textContent ?? ''
-      const id = plainText.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
-      return `<${tag} id="${id}">${text}</${tag}>`
-    }
-  )
-
-  result = result.replace(
-    /<table>/g,
-    '<div class="table-wrapper"><table>'
-  )
-  result = result.replace(
-    /<\/table>/g,
-    '</table></div>'
-  )
-
-  result = result.replace(
-    /<a\s+href="(?!\/)([^"]+)"/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer"'
-  )
-
-  return result
+  return html
 }
 
 export function generateStaticParams() {
-  const posts = getAllPosts()
-  return posts.map((post) => ({
-    category: post.category,
-    slug: post.slug,
-  }))
+  return getAllPosts().map((post) => ({ category: post.category, slug: post.slug }))
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ category: string; slug: string }> }): Promise<Metadata> {
@@ -123,9 +88,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
       modifiedTime: post.date,
       authors: authors.map(a => a.name),
       tags: post.tags,
-      images: post.cover
-        ? [{ url: post.cover.src, alt: post.title }]
-        : [],
+      images: post.cover ? [{ url: post.cover.src, alt: post.title }] : [],
     },
     twitter: {
       card: 'summary_large_image',
@@ -133,9 +96,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
       description: post.excerpt ?? '',
       images: post.cover ? [post.cover.src] : [],
     },
-    alternates: {
-      canonical: url,
-    },
+    alternates: { canonical: url },
   }
 }
 
@@ -153,152 +114,129 @@ export default async function PostPage({ params }: { params: Promise<{ category:
 
   const related = allPosts
     .filter((p) => p.slug !== post.slug)
-    .map((p) => {
-      const sharedTags = p.tags.filter((t) => post.tags.includes(t)).length
-      const sameCategory = p.category === post.category ? 2 : 0
-      return { post: p, score: sharedTags * 3 + sameCategory }
-    })
+    .map((p) => ({ post: p, score: p.tags.filter(t => post.tags.includes(t)).length * 3 + (p.category === post.category ? 2 : 0) }))
     .filter((r) => r.score >= 2)
     .sort((a, b) => b.score - a.score)
     .slice(0, 3)
     .map((r) => r.post)
 
   const html = renderMdxToHtml(post.content)
-
   const postUrl = `${SITE_URL}/${category}/${slug}`
+
   const resolvedAuthors = post.authors.map(a => {
-    try {
-      const author = getAuthorBySlug(a)
-      return { '@type': 'Person', name: author.name, url: `${SITE_URL}/authors/${a}` }
-    } catch {
-      return { '@type': 'Person', name: a }
-    }
+    try { const author = getAuthorBySlug(a); return { '@type': 'Person', name: author.name, url: `${SITE_URL}/authors/${a}` } }
+    catch { return { '@type': 'Person', name: a } }
   })
-
-  const articleJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.excerpt ?? '',
-    datePublished: new Date(post.date).toISOString(),
-    dateModified: new Date(post.date).toISOString(),
-    author: resolvedAuthors,
-    publisher: {
-      '@type': 'Organization',
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
-    url: postUrl,
-    ...(post.cover && { image: `${SITE_URL}${post.cover.src}` }),
-    keywords: post.tags?.join(', '),
-    articleSection: post.category,
-  }
-
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: CATEGORY_LABELS[post.category] ?? post.category, item: `${SITE_URL}/${post.category}` },
-      { '@type': 'ListItem', position: 3, name: post.title, item: postUrl },
-    ],
-  }
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: post.title,
+          description: post.excerpt ?? '',
+          datePublished: new Date(post.date).toISOString(),
+          dateModified: new Date(post.date).toISOString(),
+          author: resolvedAuthors,
+          publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+          mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+          url: postUrl,
+          ...(post.cover && { image: `${SITE_URL}${post.cover.src}` }),
+          keywords: post.tags?.join(', '),
+          articleSection: post.category,
+        })
+      }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+            { '@type': 'ListItem', position: 2, name: CATEGORY_LABELS[post.category] ?? post.category, item: `${SITE_URL}/${post.category}` },
+            { '@type': 'ListItem', position: 3, name: post.title, item: postUrl },
+          ],
+        })
+      }} />
       <ReadingProgress />
-
       <main id="main-content">
-        <div className="container">
-          <header className="post-header">
-            <nav className="breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span className="breadcrumb-sep" aria-hidden="true">/</span>
-              <Link href={`/${post.category}`}>{CATEGORY_LABELS[post.category]}</Link>
-              <span className="breadcrumb-sep" aria-hidden="true">/</span>
-              <span aria-current="page">{post.title}</span>
+        <div className="container-blog">
+          <header className="pt-12 pb-8 border-b border-glass-border mb-8">
+            <nav className="flex items-center gap-2 text-xs text-muted-foreground mb-6">
+              <Link href="/" className="text-muted-foreground hover:text-foreground no-underline">Home</Link>
+              <span className="opacity-40">/</span>
+              <Link href={`/${post.category}`} className="text-muted-foreground hover:text-foreground no-underline">
+                {CATEGORY_LABELS[post.category]}
+              </Link>
+              <span className="opacity-40">/</span>
+              <span className="text-foreground">{post.title}</span>
             </nav>
 
-            <div className="post-header-meta">
-              <Link href={`/${post.category}`} className="badge badge--category">
-                {CATEGORY_LABELS[post.category]}
+            <div className="flex items-center gap-2 flex-wrap mb-4">
+              <Link href={`/${post.category}`} className="no-underline">
+                <Badge variant="secondary" className="text-[10px] px-1.5 py-0">{CATEGORY_LABELS[post.category]}</Badge>
               </Link>
               <TagList tags={post.tags} linked={true} />
             </div>
 
-            <h1 className="post-title">{post.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-semibold leading-tight tracking-tight mb-4">{post.title}</h1>
 
-            {post.excerpt && (
-              <p className="post-excerpt">{post.excerpt}</p>
-            )}
+            {post.excerpt && <p className="text-lg text-muted-foreground leading-relaxed max-w-[58ch] mb-6">{post.excerpt}</p>}
 
-            <AuthorByline
-              authors={authors}
-              date={post.date}
-              readingTime={post.readingTime}
-            />
+            <AuthorByline authors={authors} date={post.date} readingTime={post.readingTime} />
           </header>
 
           {post.cover && (
-            <div className="post-cover">
-              <Image
-                src={post.cover.src}
-                alt={post.cover.alt || `Cover image for ${post.title}`}
-                fill
-                priority
-                sizes="(max-width: 1200px) 100vw, 1200px"
-                style={{ objectFit: 'cover' }}
-              />
+            <div className="relative aspect-[21/9] overflow-hidden rounded-xl border border-glass-border mb-8 bg-muted">
+              <Image src={post.cover.src} alt={post.cover.alt || `Cover image for ${post.title}`} fill priority sizes="(max-width: 1200px) 100vw, 1200px" className="object-cover" />
             </div>
           )}
 
-          <div className="post-layout">
-            <div className="post-content-container">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_17rem] gap-16 items-start pb-12">
+            <div>
               <article className="prose" aria-label="Post content">
                 <div dangerouslySetInnerHTML={{ __html: html }} />
               </article>
-              <ShareButtons url={`/${category}/${slug}`} title={post.title} />
+              <div className="mt-8 pt-6 border-t border-glass-border">
+                <ShareButtons url={`/${category}/${slug}`} title={post.title} />
+              </div>
             </div>
             <TableOfContents headings={headings} />
           </div>
 
-          <section className="post-authors-section" aria-label="About the authors">
-            {authors.map(author => (
-              <AuthorCard key={author.slug} author={author} />
-            ))}
+          <section className="mt-10 pt-8 border-t border-glass-border space-y-4" aria-label="About the authors">
+            {authors.map(author => <AuthorCard key={author.slug} author={author} />)}
           </section>
 
           {related.length > 0 && (
-            <aside className="related-section" aria-label="Related posts">
-              <p className="related-section-title">Related posts</p>
-              <div className="grid-3">
+            <aside className="mt-10 pt-8 border-t border-glass-border" aria-label="Related posts">
+              <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-6">Related posts</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {related.map(p => <PostCard key={p.slug} post={p} variant="compact" />)}
               </div>
             </aside>
           )}
 
-          <nav className="post-nav" aria-label="Previous and next posts">
+          <nav className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10 pt-8 border-t border-glass-border pb-16" aria-label="Previous and next posts">
             {prevPost && (
-              <Link href={`/${prevPost.category}/${prevPost.slug}`}
-                    className="post-nav-link">
-                <span className="post-nav-label"><ArrowLeft size={16} /> Previous</span>
-                <span className="post-nav-title">{prevPost.title}</span>
+              <Link href={`/${prevPost.category}/${prevPost.slug}`} className="flex flex-col gap-2 p-5 glass rounded-xl glass-card-hover no-underline">
+                <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground flex items-center gap-1">
+                  <ArrowLeft className="size-3" /> Previous
+                </span>
+                <span className="font-medium text-foreground leading-snug">{prevPost.title}</span>
               </Link>
             )}
             {nextPost && (
-              <Link href={`/${nextPost.category}/${nextPost.slug}`}
-                    className="post-nav-link post-nav-link--next">
-                <span className="post-nav-label">Next <ArrowRight size={16} /></span>
-                <span className="post-nav-title">{nextPost.title}</span>
+              <Link href={`/${nextPost.category}/${nextPost.slug}`} className="flex flex-col gap-2 p-5 glass rounded-xl glass-card-hover no-underline text-right sm:col-start-2">
+                <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground flex items-center gap-1 justify-end">
+                  Next <ArrowRight className="size-3" />
+                </span>
+                <span className="font-medium text-foreground leading-snug">{nextPost.title}</span>
               </Link>
             )}
           </nav>
         </div>
       </main>
-
       <CodeCopyButton />
     </>
   )

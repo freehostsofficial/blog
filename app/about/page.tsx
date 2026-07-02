@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main id="main-content">
-      <div className="container" style={{ paddingTop: 'var(--sp-16)', paddingBottom: 'var(--sp-24)' }}>
-        <h1 style={{ marginBottom: 'var(--sp-8)' }}>About</h1>
+      <div className="container-narrow py-16 pb-24">
+        <h1 className="text-3xl font-semibold tracking-tight mb-8">About</h1>
 
-        <div className="prose" style={{ maxWidth: 'none' }}>
+        <div className="prose max-w-none">
           <p>
             {SITE_NAME} is a community-driven directory of free web hosting providers.
             We review, compare, and document the best ways to host your projects

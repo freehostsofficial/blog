@@ -1,5 +1,6 @@
-import Image from 'next/image'
 import Link from 'next/link'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { getInitials } from '@/lib/utils'
 import type { Author } from '@/types'
 
@@ -12,27 +13,31 @@ export default function AuthorCard({ author, postCount }: Props) {
   const { name, slug, avatar, bio, role } = author
 
   return (
-    <article className="author-card">
-      <div className="author-card-header">
-        <div className="avatar-lg">
-          {avatar
-            ? <Image src={avatar} alt={name} width={72} height={72} />
-            : <span aria-hidden="true">{getInitials(name)}</span>
-          }
-        </div>
+    <Card className="glass-card-hover border-0 h-full">
+      <CardHeader className="flex-row items-center gap-4 pb-3">
+        <Avatar className="size-14">
+          {avatar ? (
+            <AvatarImage src={avatar} alt={name} />
+          ) : null}
+          <AvatarFallback className="text-sm">{getInitials(name)}</AvatarFallback>
+        </Avatar>
 
-        <div>
-          <Link href={`/authors/${slug}`} className="author-card-name">{name}</Link>
-          {role && <p className="author-card-role">{role}</p>}
+        <div className="space-y-1">
+          <Link href={`/authors/${slug}`} className="font-semibold text-foreground hover:text-primary transition-colors no-underline">
+            {name}
+          </Link>
+          {role && <p className="text-xs text-muted-foreground">{role}</p>}
           {postCount !== undefined && (
-            <p className="author-card-post-count">
-              {postCount} {postCount === 1 ? 'post' : 'posts'}
-            </p>
+            <p className="text-xs text-muted-foreground">{postCount} {postCount === 1 ? 'post' : 'posts'}</p>
           )}
         </div>
-      </div>
+      </CardHeader>
 
-      {bio && <p className="author-card-bio">{bio}</p>}
-    </article>
+      {bio && (
+        <CardContent>
+          <p className="text-sm text-muted-foreground leading-relaxed">{bio}</p>
+        </CardContent>
+      )}
+    </Card>
   )
 }

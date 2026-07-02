@@ -1,28 +1,15 @@
 import type { Metadata } from 'next'
-import { DM_Serif_Display, Inter } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
+import { TooltipProvider } from '@/components/ui/tooltip'
+import { Toaster } from 'sonner'
 import Nav from '@/components/Nav'
-import { ShortcutOverlay } from '@/components/ShortcutOverlay'
 import Footer from '@/components/Footer'
-import { ToastContainer } from '@/components/ui/toast'
-import { ImageLightbox } from '@/components/ImageLightbox'
 import { SITE_NAME, SITE_URL } from '@/lib/config'
 import './globals.css'
+import { cn } from "@/lib/utils";
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-body',
-  display: 'swap',
-})
-
-const dmSerif = DM_Serif_Display({
-  subsets: ['latin'],
-  weight: ['400'],
-  style: ['normal', 'italic'],
-  variable: '--font-display',
-  display: 'swap',
-  preload: true,
-})
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -57,27 +44,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${dmSerif.variable}`}
+      className={cn(geist.variable, "font-sans")}
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
     >
-      <body>
+      <body className="min-h-dvh flex flex-col">
         <ThemeProvider
-          attribute="data-theme"
+          attribute="class"
           defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange
         >
-          <a href="#main-content" className="skip-link">
-            Skip to content
-          </a>
-          <Nav />
-          <div className="page-body">
-            {children}
-          </div>
-          <Footer />
-          <ToastContainer />
-          <ImageLightbox />
-          <ShortcutOverlay />
+          <TooltipProvider>
+            <a href="#main-content" className="skip-link">
+              Skip to content
+            </a>
+            <Nav />
+            <div className="flex-1 pt-14">
+              {children}
+            </div>
+            <Footer />
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                className: "glass-card",
+                duration: 3000,
+              }}
+            />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

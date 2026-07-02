@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getAllAuthors, getAuthorBySlug } from '@/lib/authors'
 import { getPostsByAuthor } from '@/lib/posts'
 import PostCard from '@/components/PostCard'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import { SITE_URL } from '@/lib/config'
+import { getInitials } from '@/lib/utils'
 
 export function generateStaticParams() {
   return getAllAuthors().map((a) => ({ slug: a.slug }))
@@ -28,35 +30,35 @@ export default async function AuthorProfilePage({ params }: { params: Promise<{ 
   const { slug } = await params
   let author
   try { author = getAuthorBySlug(slug) } catch { notFound() }
-
   const posts = getPostsByAuthor(slug)
 
   return (
     <main id="main-content">
-      <div className="container">
-        <header className="page-header">
-          <div className="author-card-header">
-            <div className="avatar-lg">
-              {author.avatar
-                ? <Image src={author.avatar} alt={author.name} width={72} height={72} />
-                : <span>{author.name.slice(0, 2).toUpperCase()}</span>
-              }
-            </div>
+      <div className="container-blog">
+        <header className="pb-8 mb-10 border-b border-glass-border pt-12">
+          <div className="flex items-center gap-4 mb-4">
+            <Avatar className="size-16">
+              {author.avatar ? <AvatarImage src={author.avatar} alt={author.name} /> : null}
+              <AvatarFallback className="text-lg">{getInitials(author.name)}</AvatarFallback>
+            </Avatar>
             <div>
-              <h1>{author.name}</h1>
-              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--c-text-3)' }}>{author.role}</p>
-              <div className="author-card-links" style={{ marginTop: 'var(--sp-3)' }}>
+              <h1 className="text-3xl font-semibold tracking-tight">{author.name}</h1>
+              <p className="text-sm text-muted-foreground">{author.role}</p>
+              <div className="flex gap-3 mt-2">
                 {author.links?.github && (
-                  <a href={`https://github.com/${author.links.github}`} target="_blank" rel="noopener noreferrer"
-                     className="author-social-link">GitHub</a>
+                  <Button variant="ghost" size="xs" nativeButton={false} render={<a href={`https://github.com/${author.links.github}`} target="_blank" rel="noopener noreferrer" />}>
+                    GitHub
+                  </Button>
                 )}
                 {author.links?.twitter && (
-                  <a href={`https://twitter.com/${author.links.twitter}`} target="_blank" rel="noopener noreferrer"
-                     className="author-social-link">Twitter</a>
+                  <Button variant="ghost" size="xs" nativeButton={false} render={<a href={`https://twitter.com/${author.links.twitter}`} target="_blank" rel="noopener noreferrer" />}>
+                    Twitter
+                  </Button>
                 )}
                 {author.links?.website && (
-                  <a href={author.links.website} target="_blank" rel="noopener noreferrer"
-                     className="author-social-link">Website</a>
+                  <Button variant="ghost" size="xs" nativeButton={false} render={<a href={author.links.website} target="_blank" rel="noopener noreferrer" />}>
+                    Website
+                  </Button>
                 )}
               </div>
             </div>
@@ -64,16 +66,14 @@ export default async function AuthorProfilePage({ params }: { params: Promise<{ 
         </header>
 
         {author.bio && (
-          <p style={{ fontSize: 'var(--text-base)', color: 'var(--c-text-2)', lineHeight: 1.7, maxWidth: '65ch', marginBottom: 'var(--sp-8)' }}>
-            {author.bio}
-          </p>
+          <p className="text-base text-muted-foreground leading-relaxed max-w-[65ch] mb-8">{author.bio}</p>
         )}
 
-        <h2 className="home-section-label">
+        <div className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-6">
           {posts.length} {posts.length === 1 ? 'post' : 'posts'} published
-        </h2>
+        </div>
 
-        <div className="post-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-12">
           {posts.map(post => (
             <PostCard key={post.slug} post={post} />
           ))}
